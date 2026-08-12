@@ -1,5 +1,6 @@
 package dev.raflos.cocina.ui.despensa
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,12 +9,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -48,6 +52,7 @@ import dev.raflos.cocina.data.fmt
 import dev.raflos.cocina.data.model.AppState
 import dev.raflos.cocina.data.model.PantryPage
 import dev.raflos.cocina.ui.AppViewModel
+import dev.raflos.cocina.ui.SystemBarsAppearance
 import dev.raflos.cocina.ui.theme.DespensaColors
 import dev.raflos.cocina.ui.theme.SerifFamily
 
@@ -60,7 +65,9 @@ fun DespensaScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
 
     val active = state.pPages.firstOrNull { it.id == state.pActiveId }
 
-    Column(Modifier.fillMaxSize().background(DespensaColors.paper)) {
+    SystemBarsAppearance(lightBackground = true)
+    BackHandler(onBack = onBack)
+    Column(Modifier.fillMaxSize().background(DespensaColors.paper).windowInsetsPadding(WindowInsets.systemBars)) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
             TextButton(onClick = onBack, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
                 Text("← Menú", color = DespensaColors.inkSoft, fontSize = 12.5.sp, fontWeight = FontWeight.SemiBold)

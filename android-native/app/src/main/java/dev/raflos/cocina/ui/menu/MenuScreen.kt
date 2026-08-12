@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Book
@@ -27,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.raflos.cocina.ui.SystemBarsAppearance
 import dev.raflos.cocina.ui.theme.MenuColors
 
 enum class MenuDestination { DESPENSA, RECETAS, COMPRA }
@@ -41,8 +45,9 @@ private val ITEMS = listOf(
 
 @Composable
 fun MenuScreen(onGo: (MenuDestination) -> Unit) {
+    SystemBarsAppearance(lightBackground = false)
     Box(
-        modifier = Modifier.fillMaxSize().background(MenuColors.bg).padding(24.dp),
+        modifier = Modifier.fillMaxSize().background(MenuColors.bg).windowInsetsPadding(WindowInsets.systemBars).padding(24.dp),
         contentAlignment = Alignment.Center,
     ) {
         Column(

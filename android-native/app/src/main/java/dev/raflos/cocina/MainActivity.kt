@@ -2,13 +2,11 @@ package dev.raflos.cocina
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -45,9 +43,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    Box(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars)) {
-                        CocinaRoot()
-                    }
+                    CocinaRoot()
                 }
             }
         }
@@ -87,6 +83,8 @@ private fun CocinaRoot() {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
+
+    BackHandler(enabled = screen != Screen.MENU) { screen = Screen.MENU }
 
     when (screen) {
         Screen.MENU -> MenuScreen(onGo = { dest ->

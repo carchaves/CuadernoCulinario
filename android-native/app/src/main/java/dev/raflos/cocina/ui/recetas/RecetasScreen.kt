@@ -1,5 +1,6 @@
 package dev.raflos.cocina.ui.recetas
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -7,10 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,6 +45,7 @@ import dev.raflos.cocina.data.model.AppState
 import dev.raflos.cocina.data.model.Recipe
 import dev.raflos.cocina.data.parseMinutes
 import dev.raflos.cocina.ui.AppViewModel
+import dev.raflos.cocina.ui.SystemBarsAppearance
 import dev.raflos.cocina.ui.theme.RecetasColors
 import dev.raflos.cocina.ui.theme.SerifFamily
 
@@ -58,7 +63,15 @@ fun RecetasScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
     val editing = editingId?.let { id -> recipes.firstOrNull { it.id == id } }
     val pantryFlat = state.pPages.flatMap { it.ingredients }
 
-    Column(Modifier.fillMaxSize().background(RecetasColors.paper)) {
+    SystemBarsAppearance(lightBackground = true)
+    // Un paso por vez: si hay una receta abierta o el formulario, "atrás" vuelve a la lista;
+    // si ya estamos en la lista, "atrás" vuelve al Menú (BackHandler de MainActivity).
+    BackHandler(enabled = adding || selectedId != null) {
+        adding = false
+        editingId = null
+        selectedId = null
+    }
+    Column(Modifier.fillMaxSize().background(RecetasColors.paper).windowInsetsPadding(WindowInsets.systemBars)) {
         Column(Modifier.padding(16.dp)) {
             TextButton(onClick = onBack, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) {
                 Text("← Menú", color = RecetasColors.inkSoft, fontSize = 12.5.sp, fontWeight = FontWeight.SemiBold)
