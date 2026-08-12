@@ -17,7 +17,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        val apiUrl = project.findProperty("COCINA_API_URL") as String? ?: "https://cocina-app-server.fly.dev"
+        val apiUrl = project.findProperty("COCINA_API_URL") as String? ?: "https://cocina-app-server.onrender.com"
         buildConfigField("String", "API_URL", "\"$apiUrl\"")
     }
 

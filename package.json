@@ -14,7 +14,6 @@
     "server:start": "npm run start -w server",
     "android:build": "cd android-native && ./gradlew assembleDebug",
     "android:install": "adb install -r android-native/app/build/outputs/apk/debug/app-debug.apk",
-    "android:run": "npm run android:build && npm run android:install && adb shell am start -n dev.raflos.cocina/.MainActivity",
-    "deploy": "flyctl deploy --app cocina-app-server"
+    "android:run": "npm run android:build && npm run android:install && adb shell am start -n dev.raflos.cocina/.MainActivity"
   }
 }

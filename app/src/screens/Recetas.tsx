@@ -243,7 +243,7 @@ main{padding:18px 20px}
 .link-back{border:none;background:none;color:#7A7062;font-family:inherit;font-size:12.5px;font-weight:600;
   letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:0 0 12px}
 
-.card{background:#FDFBF6;border:1px solid #E7D8BC;border-radius:16px;margin-bottom:16px;overflow:hidden}
+.card{background:#FDFBF6;border:1px solid #E7D8BC;border-radius:16px;margin-bottom:16px}
 .card-head{padding:15px 16px 13px;border-bottom:1px solid #E7D8BC;display:flex;align-items:flex-start;gap:12px}
 .card-head h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:20px;line-height:1.08;margin:0}
 .card-emoji{font-size:22px;line-height:1;width:26px;flex:none}
@@ -270,7 +270,7 @@ main{padding:18px 20px}
   padding:2px 8px;border-radius:7px;margin-left:4px}
 
 .steps-list{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
-.step-card{background:#FDFBF6;border:1px solid #E7D8BC;border-radius:16px;overflow:hidden;cursor:pointer}
+.step-card{background:#FDFBF6;border:1px solid #E7D8BC;border-radius:16px;cursor:pointer}
 .step-card-head{padding:15px 16px 13px;border-bottom:1px solid #E7D8BC;display:flex;align-items:flex-start;gap:12px}
 .step-circle{width:24px;height:24px;border-radius:50%;background:#EDE7DA;border:2px solid #E2DBCD;display:flex;
   align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#7A7062;flex:none}
