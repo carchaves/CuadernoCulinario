@@ -1,19 +1,15 @@
-import { Capacitor } from "@capacitor/core";
 import type { Storage } from "./types";
 import { localStorageAdapter } from "./localStorage";
-import { httpStorageAdapter } from "./httpStorage";
-import { capacitorStorageAdapter } from "./capacitorStorage";
+import { serverStorage } from "./serverStorage";
 
 let cached: Promise<Storage> | null = null;
 
 async function detectStorage(): Promise<Storage> {
-  if (Capacitor.isNativePlatform()) return capacitorStorageAdapter;
   try {
-    const res = await fetch("/api/status", { headers: { Accept: "application/json" } });
-    const ct = res.headers.get("content-type") || "";
-    if (res.ok && ct.includes("application/json")) return httpStorageAdapter;
+    const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/health`);
+    if (res.ok) return serverStorage;
   } catch {
-    // no desktop-server reachable
+    // sin servidor accesible: modo local para iterar la UI sin backend
   }
   return localStorageAdapter;
 }

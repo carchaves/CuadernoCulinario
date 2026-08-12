@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Cocina App</string>
-    <string name="title_activity_main">Cocina App</string>
-    <string name="package_name">dev.raflos.cocina</string>
-    <string name="custom_url_scheme">dev.raflos.cocina</string>
-</resources>
