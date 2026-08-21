@@ -6,6 +6,8 @@ on:
     paths:
       - "app/**"
       - ".github/workflows/deploy-pages.yml"
+  # workflow_dispatch: corre este deploy a mano desde la pestaña Actions sin necesidad de
+  # tocar app/ (por ejemplo, después de cambiar Settings → Pages → Source).
   workflow_dispatch: {}
 
 permissions:
