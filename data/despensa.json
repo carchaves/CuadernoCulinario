@@ -1,0 +1,978 @@
+{
+  "pages": [
+    {
+      "id": "msq6u112x2edb",
+      "name": "Granos, harinas y secos",
+      "ingredients": [
+        {
+          "id": "msq6u9rw1vj93",
+          "name": "Harina común",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6urlri1i9n",
+          "name": "Harina leudante",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v7jshxh6j",
+          "name": "Masa harina de maíz",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v7wmpv1tk",
+          "name": "Pan rallado",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v84v49jcv",
+          "name": "Panko",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v8c5huecj",
+          "name": "Láminas de lasaña",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v8l44sqm0",
+          "name": "Avena en hojuelas",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v8s7tih2i",
+          "name": "Arroz blanco",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v90gbc3gy",
+          "name": "Arroz arborio/carnaroli",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v99bqjwc8",
+          "name": "Frijoles rojos secos",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v9hzl43dl",
+          "name": "Frijoles negros secos",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v9pwpkwf2",
+          "name": "Maicena",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6v9xsuh8nu",
+          "name": "Azúcar blanca",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6va6twrk1m",
+          "name": "Azúcar moreno",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6vafgviykb",
+          "name": "Azúcar glas",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6vapi3ha9u",
+          "name": "Leche en polvo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6vawyv1fhw",
+          "name": "Dátiles sin carozo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6vk0x6izkx",
+          "name": "Tortillas de harina",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6vkp893njx",
+          "name": "Pan de molde",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6vlebc0uj0",
+          "name": "Obleas de gyoza/dumpling",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "msq6w19c0q902",
+      "name": "Frescos (frutas, verduras, hierbas)",
+      "ingredients": [
+        {
+          "id": "msq6wp3d5a8p4",
+          "name": "Cebolla amarilla/blanca",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wpg2mko2g",
+          "name": "Cebolla morada",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wpty99z34",
+          "name": "Cebolla de verdeo/cebollín",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wq7ov9i16",
+          "name": "Ajo",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wqfhc5w2p",
+          "name": "Pimiento rojo",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wqndkczsu",
+          "name": "Pimiento verde",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wquc4f67m",
+          "name": "Tomate",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wr1yjnz77",
+          "name": "Tomatillo",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wralpk20k",
+          "name": "Papa",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wrjku58oh",
+          "name": "Zanahoria",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6wrtpketd2",
+          "name": "Apio",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6x33iion3r",
+          "name": "Champiñones",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6x3so5o5fk",
+          "name": "Repollo",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6x426p6erb",
+          "name": "Repollo chino / col napa",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6x4pud5tbd",
+          "name": "Arvejas",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6x5euohccd",
+          "name": "Berenjena o brotes de bambú",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6x64t5msng",
+          "name": "Jengibre",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6x6u6xqh1b",
+          "name": "Aguacate/palta",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xg14gmb49",
+          "name": "Plátano maduro",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xg9jzrnaz",
+          "name": "Pera",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xghbyw10o",
+          "name": "Limón",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xgpm1hl3l",
+          "name": "Lima",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xgxflatnc",
+          "name": "Naranja",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xhncblgcc",
+          "name": "Arándanos",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6xib812fdl",
+          "name": "Cilantro/culantro",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xiix57cfg",
+          "name": "Perejil",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xirc74r8r",
+          "name": "Albahaca",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6xj19ys5ks",
+          "name": "Chile fresco",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "msq6y7d5fsery",
+      "name": "Carnes, pescados y huevos",
+      "ingredients": [
+        {
+          "id": "msq6ypifbvcez",
+          "name": "Posta/pecho de res para deshebrar",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6ypvsdylb0",
+          "name": "Res para guisar - aguja/roast",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6yq8hosglg",
+          "name": "Res en tiras - bife angosto/lomo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6yqxdfzfe6",
+          "name": "Bife grueso - ojo de bife/ribeye",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq6yrlmyrcmu",
+          "name": "Carne molida de res",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6yru22g2e5",
+          "name": "Carne molida mixta res+cerdo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6ys26or20j",
+          "name": "Cerdo molido",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z0jpt7jj1",
+          "name": "Muslos de pollo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z0rjfo18b",
+          "name": "Pechuga de pollo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z10er6gy9",
+          "name": "Filetes finos para milanesa",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z19uhjm09",
+          "name": "Costilla/panceta de cerdo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z1iapiz1o",
+          "name": "Tocino",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z1s86x34q",
+          "name": "Chorizo/linguiça",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z207h6szy",
+          "name": "Gambas - opcional",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq6z2ox65wff",
+          "name": "Huevos",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "msq6zqrlbcmc0",
+      "name": "Lácteos y refrigerados",
+      "ingredients": [
+        {
+          "id": "msq700x0fgmsq",
+          "name": "Leche entera",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq7019ypsq2n",
+          "name": "Yogur griego",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq701mbg0m06",
+          "name": "Requesón/cottage",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq701z483jc3",
+          "name": "Mozzarella / queso que derrite",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq7026ygy7fs",
+          "name": "Queso parmesano",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq702fjgic5q",
+          "name": "Queso duro rallado centroamericano",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq702q4vhqjj",
+          "name": "Queso crema",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq702xc2y0gr",
+          "name": "Mantequilla",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq7035lu8gsn",
+          "name": "Crema agria",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq703h6ykitr",
+          "name": "Crema/nata",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "msq70s9e6ljy4",
+      "name": "Especias, condimentos y leudantes",
+      "ingredients": [
+        {
+          "id": "msq712vh89k8l",
+          "name": "Sal fina",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71389kj9mt",
+          "name": "Sal gruesa",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq713knjtwx1",
+          "name": "Pimienta",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq713yc06mrm",
+          "name": "Comino molido",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq7146wyogxe",
+          "name": "Orégano seco",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq714gamieez",
+          "name": "Pimentón dulce",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq714nuixtzv",
+          "name": "Pimentón húngaro",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq714wnx2mui",
+          "name": "Ají molido",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq715k5cmouv",
+          "name": "Hojas de laurel",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq71hza20cyg",
+          "name": "Canela molida",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71ioke6w55",
+          "name": "Canela en rama",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq71jebvn4b0",
+          "name": "Clavo de olor",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71jm9cppkv",
+          "name": "Nuez moscada",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71kca4fwzf",
+          "name": "Anís estrellado",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq71l0jxu3tl",
+          "name": "Esencia de vainilla",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71l982po4a",
+          "name": "Polvo de hornear",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71liww5lsu",
+          "name": "Bicarbonato de sodio",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71m730tway",
+          "name": "Gelatina sin sabor",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq71mw9wgacz",
+          "name": "Pasta de ají amarillo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq71n5alatbq",
+          "name": "Pasta de curry rojo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "msq72j0r1bqoi",
+      "name": "Aceites, salsas y líquidos",
+      "ingredients": [
+        {
+          "id": "msq72ui91ro3u",
+          "name": "Aceite vegetal/girasol",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72uvhdf69b",
+          "name": "Aceite de oliva",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72v847f8e2",
+          "name": "Aceite de sésamo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72vkn2ist2",
+          "name": "Aceite de coco",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72vsr1mbmm",
+          "name": "Manteca/grasa de cerdo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72w0somx02",
+          "name": "Vinagre blanco",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72w8a73s1k",
+          "name": "Vinagre de vino",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72whyntmmf",
+          "name": "Vinagre de arroz",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72wpwvveqe",
+          "name": "Salsa de soja clara",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq72wy17sha8",
+          "name": "Salsa de soja oscura",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq7388a9ngj7",
+          "name": "Salsa Lizano o Worcestershire",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq738j7aac0m",
+          "name": "Salsa de pescado",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq738sby5lth",
+          "name": "Mirin",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq7391x69l30",
+          "name": "Sake / vino de arroz Shaoxing",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq739auhtlac",
+          "name": "Vino tinto",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq739j5wu1lh",
+          "name": "Vino blanco",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq739t63as7h",
+          "name": "Pisco - opcional",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq73a27y16c3",
+          "name": "Caldo de res/pollo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq73aah3ph8k",
+          "name": "Pasta de tomate",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq73ajqa3awx",
+          "name": "Tomate triturado",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq73jrvgw11v",
+          "name": "Leche de coco - lata",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq73jyzpfrox",
+          "name": "Leche condensada - lata",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq73k8eo9yz1",
+          "name": "Frijoles negros - lata",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        },
+        {
+          "id": "msq73ky8bmzhj",
+          "name": "Aceitunas",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq73l7u8yp6u",
+          "name": "Dulce de leche",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq73lg1d5nbb",
+          "name": "Miel",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        }
+      ]
+    },
+    {
+      "id": "msq74c5fseahy",
+      "name": "Repostería, chocolate y frutos secos",
+      "ingredients": [
+        {
+          "id": "msq74mi5dk2cj",
+          "name": "Cacao amargo en polvo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74muqsv1fv",
+          "name": "Chocolate amargo en tableta",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74n6lux9j8",
+          "name": "Chispas de chocolate",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74nj90575t",
+          "name": "Coco rallado",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74nr4ijwxa",
+          "name": "Nueces",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74nzqhqj20",
+          "name": "Almendras",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74o7t58elg",
+          "name": "Pecanas",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74of0eqsko",
+          "name": "Mantequilla de maní",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74xkwm3sex",
+          "name": "Mantequilla de almendra",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74xun99xzw",
+          "name": "Semillas de chía",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74y307hw0k",
+          "name": "Semillas de girasol",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74ybbtgpx0",
+          "name": "Ajonjolí / semillas de sésamo",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74ykfunh0n",
+          "name": "Semillas de calabaza / pepitoria",
+          "type": "peso",
+          "unit": "g",
+          "amount": 0
+        },
+        {
+          "id": "msq74z8mvfxfo",
+          "name": "Chiles secos guajillo/pasa",
+          "type": "unidad",
+          "unit": "u",
+          "amount": 0
+        }
+      ]
+    }
+  ],
+  "activePageId": "msq72j0r1bqoi"
+}
