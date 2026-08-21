@@ -43,3 +43,23 @@ export interface AppState {
   recipes: Record<RecipeView, Recipe[]>;
   rDone: Record<string, true>;
 }
+
+// ---- Forma de los archivos en `data/` del repo ----------------------------
+// Estos tipos describen el JSON tal cual vive en GitHub (ver `data/README.md`).
+// `useAppData` los traduce al `AppState` en memoria de arriba.
+
+export interface DespensaFile {
+  pages: PantryPage[];
+  activePageId: string | null;
+}
+
+export interface RecetasFile {
+  cocina: Recipe[];
+  repo: Recipe[];
+  stepDone: Record<string, boolean>;
+}
+
+export interface ListaFile {
+  includedIngredientIds: string[];
+  doneIngredientIds: string[];
+}

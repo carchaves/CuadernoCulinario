@@ -17,8 +17,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        val apiUrl = project.findProperty("COCINA_API_URL") as String? ?: "https://cocina-app-server.onrender.com"
-        buildConfigField("String", "API_URL", "\"$apiUrl\"")
+        // Los datos viven en este repo (data/*.json), leídos/escritos vía la Contents API.
+        buildConfigField("String", "GITHUB_OWNER", "\"carchaves\"")
+        buildConfigField("String", "GITHUB_REPO", "\"CuadernoCulinario\"")
     }
 
     buildTypes {

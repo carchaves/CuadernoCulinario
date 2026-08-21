@@ -5,39 +5,34 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
-class TokenStore(context: Context) {
+/** El Personal Access Token de GitHub, cifrado on-device. Es la única credencial de la app. */
+class GithubTokenStore(context: Context) {
     private val prefs: SharedPreferences by lazy {
         val masterKey = MasterKey.Builder(context)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
         EncryptedSharedPreferences.create(
             context,
-            "cocina_tokens",
+            "cocina_github",
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
         )
     }
 
-    fun getAccess(): String? = prefs.getString(KEY_ACCESS, null)
-    fun getRefresh(): String? = prefs.getString(KEY_REFRESH, null)
+    fun getToken(): String? = prefs.getString(KEY_PAT, null)
 
-    fun set(access: String, refresh: String) {
-        prefs.edit().putString(KEY_ACCESS, access).putString(KEY_REFRESH, refresh).apply()
-    }
-
-    fun setAccess(access: String) {
-        prefs.edit().putString(KEY_ACCESS, access).apply()
+    fun setToken(pat: String) {
+        prefs.edit().putString(KEY_PAT, pat).apply()
     }
 
     fun clear() {
-        prefs.edit().remove(KEY_ACCESS).remove(KEY_REFRESH).apply()
+        prefs.edit().remove(KEY_PAT).apply()
     }
 
-    fun hasSession(): Boolean = getRefresh() != null
+    fun hasToken(): Boolean = !getToken().isNullOrBlank()
 
     companion object {
-        private const val KEY_ACCESS = "access_token"
-        private const val KEY_REFRESH = "refresh_token"
+        private const val KEY_PAT = "github_pat"
     }
 }

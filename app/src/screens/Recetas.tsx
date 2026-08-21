@@ -1,17 +1,13 @@
 import { useMemo, useState } from "react";
 import type { AppState, RecipeView } from "../core/types";
-import type { Actions } from "../core/store";
 import { RecipeList } from "./recetas/RecipeList";
 import { RecipeDetail } from "./recetas/RecipeDetail";
-import { RecipeForm } from "./recetas/RecipeForm";
 
 const ACCENT = "#C4562A";
 
-export function Recetas({ state, actions, onBack }: { state: AppState; actions: Actions; onBack: () => void }) {
+export function Recetas({ state, onBack }: { state: AppState; onBack: () => void }) {
   const [view, setView] = useState<RecipeView>("cocina");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [adding, setAdding] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
   const [servings, setServings] = useState(4);
   const [sortByTime, setSortByTime] = useState(false);
   const [filterByPantry, setFilterByPantry] = useState(false);
@@ -19,23 +15,12 @@ export function Recetas({ state, actions, onBack }: { state: AppState; actions: 
 
   const pantryFlat = useMemo(() => state.pPages.flatMap((p) => p.ingredients), [state.pPages]);
   const pantryNames = useMemo(() => pantryFlat.map((i) => i.name.toLowerCase()), [pantryFlat]);
-  const allMetaTags = useMemo(() => {
-    const s = new Set<string>();
-    Object.values(state.recipes).forEach((arr) => arr.forEach((r) => r.meta.forEach((m) => s.add(m))));
-    return [...s];
-  }, [state.recipes]);
-  const allUtensilios = useMemo(() => {
-    const s = new Set<string>();
-    Object.values(state.recipes).forEach((arr) => arr.forEach((r) => (r.utensilios || []).forEach((u) => s.add(u))));
-    return [...s];
-  }, [state.recipes]);
 
   const recipes = state.recipes[view] || [];
   const selectedRecipe = selectedId ? recipes.find((r) => r.id === selectedId) || null : null;
-  const editingRecipe = editingId ? recipes.find((r) => r.id === editingId) || null : null;
 
-  const showList = selectedId == null && !adding;
-  const showDetail = selectedId != null && !adding;
+  const showList = selectedId == null;
+  const showDetail = selectedId != null;
 
   let doneCount = 0;
   let totalCount = 0;
@@ -50,16 +35,6 @@ export function Recetas({ state, actions, onBack }: { state: AppState; actions: 
     });
   }
   const pct = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
-
-  const startCreate = () => {
-    setEditingId(null);
-    setAdding(true);
-  };
-  const startEdit = (id: string) => {
-    setEditingId(id);
-    setSelectedId(null);
-    setAdding(true);
-  };
 
   return (
     <div className="recetas-root">
@@ -128,8 +103,6 @@ export function Recetas({ state, actions, onBack }: { state: AppState; actions: 
               </div>
             </>
           )}
-
-          {adding && <h2 className="subtitle" style={{ color: ACCENT }}>{editingId ? "Editar receta" : "Nueva receta"}</h2>}
         </div>
       </header>
 
@@ -147,7 +120,6 @@ export function Recetas({ state, actions, onBack }: { state: AppState; actions: 
             onOpen={setSelectedId}
             onToggleSort={() => setSortByTime((v) => !v)}
             onToggleFilter={() => setFilterByPantry((v) => !v)}
-            onCreate={startCreate}
           />
         )}
 
@@ -160,28 +132,7 @@ export function Recetas({ state, actions, onBack }: { state: AppState; actions: 
             pantryFlat={pantryFlat}
             rDone={state.rDone}
             accent={ACCENT}
-            actions={actions}
             onClose={() => setSelectedId(null)}
-            onEdit={() => startEdit(selectedRecipe.id)}
-          />
-        )}
-
-        {adding && (
-          <RecipeForm
-            view={view}
-            editingId={editingId}
-            editingRecipe={editingRecipe}
-            pantryFlat={pantryFlat}
-            allMetaTags={allMetaTags}
-            allUtensilios={allUtensilios}
-            accent={ACCENT}
-            actions={actions}
-            onCancel={() => setAdding(false)}
-            onSaved={(id) => {
-              setAdding(false);
-              setEditingId(null);
-              setSelectedId(id);
-            }}
           />
         )}
       </main>
@@ -237,8 +188,6 @@ main{padding:18px 20px}
 .divider{display:flex;align-items:center;gap:10px;margin:6px 0 14px;color:#A99A82;font-size:12px;font-weight:600;
   letter-spacing:.04em;text-transform:uppercase}
 .divider span{flex:1;border-top:1px solid #E7D8BC}
-.create-recipe{width:100%;border:1px dashed #C9BC9F;background:transparent;border-radius:14px;padding:14px;
-  font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:16px}
 
 .link-back{border:none;background:none;color:#7A7062;font-family:inherit;font-size:12.5px;font-weight:600;
   letter-spacing:.06em;text-transform:uppercase;cursor:pointer;padding:0 0 12px}
@@ -248,8 +197,6 @@ main{padding:18px 20px}
 .card-head h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:20px;line-height:1.08;margin:0}
 .card-emoji{font-size:22px;line-height:1;width:26px;flex:none}
 .card-body{padding:14px 16px}
-.field{width:100%;border:1px solid #E7D8BC;border-radius:9px;padding:9px 11px;font-family:inherit;font-size:14px;
-  outline:none;background:#F6F2EA;color:#292019}
 
 .ing-grid{list-style:none;margin:0 0 4px;padding:0;display:grid;grid-template-columns:1fr auto 62px;
   column-gap:10px;row-gap:7px;align-items:center}
@@ -270,70 +217,18 @@ main{padding:18px 20px}
   padding:2px 8px;border-radius:7px;margin-left:4px}
 
 .steps-list{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
-.step-card{background:#FDFBF6;border:1px solid #E7D8BC;border-radius:16px;cursor:pointer}
+.step-card{background:#FDFBF6;border:1px solid #E7D8BC;border-radius:16px}
 .step-card-head{padding:15px 16px 13px;border-bottom:1px solid #E7D8BC;display:flex;align-items:flex-start;gap:12px}
 .step-circle{width:24px;height:24px;border-radius:50%;background:#EDE7DA;border:2px solid #E2DBCD;display:flex;
   align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#7A7062;flex:none}
 .step-title{font-family:'Instrument Serif',serif;font-weight:400;font-size:20px;line-height:1.08;margin:0;flex:1;
   min-width:0;color:#292019}
 .step-card.done .step-title{color:#7A7062}
-.note-icon{border:none;background:none;cursor:pointer;padding:4px;flex:none;font-size:16px;line-height:1;color:#C6BCA9}
 .step-card-body{padding:14px 16px}
 .step-text{font-size:15px;font-weight:500;line-height:1.5;margin:0;color:#5C6353}
 .step-text.done{color:#A99A82;text-decoration:line-through;text-decoration-color:#C6BCA9}
 .step-time{display:inline-flex;margin-top:8px;font-size:12px;font-weight:600;background:#F3EAD9;padding:2px 8px;
   border-radius:7px}
-.note-textarea{width:100%;min-height:60px;border:1px solid #E7D8BC;border-radius:9px;padding:8px 10px;
-  font-family:inherit;font-size:13px;outline:none;background:#F6F2EA;color:#292019;resize:vertical}
-.note-actions{display:flex;gap:8px;margin-top:6px}
-.note-actions button{border:none;color:#fff;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:12px;
-  font-weight:600;cursor:pointer}
-.note-cancel{border:1px solid #E7D8BC!important;background:transparent!important;color:#7A7062!important}
-
-.detail-actions{display:flex;flex-direction:column;gap:10px;margin-top:4px}
-.edit-recipe{border:none;color:#fff;border-radius:12px;padding:12px;font-family:inherit;font-size:13px;
-  font-weight:600;cursor:pointer}
-.delete-recipe{border:1px dashed #D9A0A0;background:transparent;color:#B23B3B;border-radius:12px;padding:11px;
-  font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
-
-.tagac{position:relative}
-.tagac-box{display:flex;flex-wrap:wrap;gap:6px;border:1px solid #E7D8BC;border-radius:9px;padding:7px 8px}
-.tagac-box input{flex:1;min-width:120px;border:none;outline:none;font-family:inherit;font-size:13px;
-  padding:4px 2px;background:transparent}
-.tagac-tag{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:4px 8px;
-  border-radius:20px;background:#EFEADF;color:#5C6353}
-.tagac-tag button{border:none;background:none;color:#A99A82;cursor:pointer;font-size:13px;line-height:1;padding:0}
-.tagac-options{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#FDFBF6;border:1px solid #E7D8BC;
-  border-radius:9px;box-shadow:0 6px 18px rgba(0,0,0,.08);z-index:5;max-height:160px;overflow:auto}
-.tagac-options button{display:block;width:100%;text-align:left;border:none;background:none;padding:8px 12px;
-  font-family:inherit;font-size:13px;cursor:pointer;color:#292019}
-.tagac-options button:hover{background:#F6F2EA}
-.tagac-addnew{font-weight:600}
-
-.ingtag-list{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:7px}
-.ingtag-list li{display:flex;align-items:center;gap:8px}
-.ingtag-name{flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:inherit;font-size:14px;
-  font-weight:500;color:#292019;padding:2px 0}
-.ingtag-stepper{display:flex;align-items:center;gap:4px;flex:none}
-.ingtag-stepper button{width:20px;height:20px;border:1px solid #E7D8BC;background:#F6F2EA;border-radius:6px;
-  display:grid;place-items:center;cursor:pointer;color:#7A7062;font-size:12px;padding:0}
-.ingtag-amt{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:12.5px;color:#292019;min-width:30px;
-  text-align:center}
-.ingtag-unit{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:#7A7062;min-width:20px}
-.ingtag-remove{border:none;background:none;color:#A99A82;cursor:pointer;font-size:15px;line-height:1;padding:0;flex:none}
-
-.steps-editor{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
-.step-card .step-move,.steps-editor .step-move{border:none;background:none;cursor:pointer;font-size:16px;
-  line-height:1;padding:4px 6px;flex:none;color:#7A7062}
-.step-move:disabled{color:#D9D2C2;cursor:default}
-.step-remove{border:none;background:none;color:#A99A82;cursor:pointer;font-size:18px;line-height:1;padding:0;flex:none}
-.step-add{border:1px dashed #C9BC9F;background:transparent;border-radius:14px;padding:12px;font-family:inherit;
-  font-size:13px;font-weight:600;cursor:pointer}
-
-.form-actions{background:transparent;border:1px dashed #C9BC9F;border-radius:16px;padding:16px;margin-bottom:16px;
-  display:flex;gap:12px}
-.form-actions .save{flex:1;color:#fff;border:none;border-radius:9px;padding:14px 16px;font-family:inherit;
-  font-size:15px;font-weight:600;cursor:pointer}
-.form-actions .cancel{flex:1;background:transparent;border:1px solid #E7D8BC;border-radius:9px;padding:14px 16px;
-  font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;color:#7A7062}
+.step-note{margin:10px 0 0;font-size:13px;line-height:1.5;color:#7A7062;font-style:italic;border-left:2px solid #E7D8BC;
+  padding-left:10px}
 `;

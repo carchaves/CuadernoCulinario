@@ -1,9 +1,6 @@
 import { useState } from "react";
 import type { AppState } from "../core/types";
-import type { Actions } from "../core/store";
 import { fmt } from "../core/logic";
-
-const PESO_UNITS = ["g", "kg", "ml", "L"];
 
 const Icon = ({ d, size = 16, stroke = 1.7 }: { d: string; size?: number; stroke?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round">
@@ -11,27 +8,16 @@ const Icon = ({ d, size = 16, stroke = 1.7 }: { d: string; size?: number; stroke
   </svg>
 );
 const P = {
-  plus: "M12 5v14M5 12h14",
-  minus: "M5 12h14",
   x: "M18 6 6 18M6 6l12 12",
-  check: "M20 6 9 17l-5-5",
   search: "M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z",
 };
 
-export function Despensa({ state, actions, onBack }: { state: AppState; actions: Actions; onBack: () => void }) {
+export function Despensa({ state, onBack }: { state: AppState; onBack: () => void }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [addingPage, setAddingPage] = useState(false);
-  const [newPageNameVal, setNewPageNameVal] = useState("");
+  const [activeId, setActiveId] = useState<string | null>(state.pActiveId ?? (state.pPages[0]?.id ?? null));
 
-  const active = state.pPages.find((p) => p.id === state.pActiveId) || null;
-
-  const commitNewPage = () => {
-    const name = newPageNameVal.trim();
-    if (name) actions.addPage(name);
-    setNewPageNameVal("");
-    setAddingPage(false);
-  };
+  const active = state.pPages.find((p) => p.id === activeId) || null;
 
   const q = query.trim().toLowerCase();
   const results = q
@@ -114,7 +100,7 @@ export function Despensa({ state, actions, onBack }: { state: AppState; actions:
                       <button
                         className="sresult-info"
                         onClick={() => {
-                          actions.setActivePage(r.pageId);
+                          setActiveId(r.pageId);
                           setSearchOpen(false);
                           setQuery("");
                         }}
@@ -135,59 +121,26 @@ export function Despensa({ state, actions, onBack }: { state: AppState; actions:
 
         <nav className="tabs" aria-label="Páginas por tipo de ingrediente">
           {state.pPages.map((p) => (
-            <button key={p.id} className={"tab" + (p.id === state.pActiveId ? " tab-on" : "")} onClick={() => actions.setActivePage(p.id)}>
+            <button key={p.id} className={"tab" + (p.id === activeId ? " tab-on" : "")} onClick={() => setActiveId(p.id)}>
               <span className="tab-name">{p.name}</span>
               <span className="tab-count">{p.ingredients.length}</span>
             </button>
           ))}
-          {addingPage ? (
-            <span className="tab tab-adding">
-              <input
-                autoFocus
-                className="tab-input"
-                placeholder="Nombre de la página"
-                value={newPageNameVal}
-                onChange={(e) => setNewPageNameVal(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") commitNewPage();
-                  if (e.key === "Escape") {
-                    setAddingPage(false);
-                    setNewPageNameVal("");
-                  }
-                }}
-              />
-              <button className="mini ok" onClick={commitNewPage} aria-label="Crear página">
-                <Icon d={P.check} size={15} />
-              </button>
-            </span>
-          ) : (
-            <button className="tab tab-add" onClick={() => setAddingPage(true)}>
-              <Icon d={P.plus} size={15} /> Página
-            </button>
-          )}
         </nav>
 
         {!active ? (
           <div className="empty-card">
             <p className="empty-title">No hay páginas</p>
-            <p className="empty-body">Crea tu primera categoría de ingredientes para empezar.</p>
-            <button className="primary" onClick={() => setAddingPage(true)}>
-              <Icon d={P.plus} size={16} /> Crear página
-            </button>
+            <p className="empty-body">Todavía no hay categorías de ingredientes en la despensa.</p>
           </div>
         ) : (
           <section className="sheet">
             <div className="page-head">
               <h2 className="page-title">{active.name}</h2>
-              <div className="page-actions">
-                <button className="ghost danger" onClick={() => actions.deletePage(active.id)} aria-label="Eliminar página">
-                  <Icon d={P.x} size={15} />
-                </button>
-              </div>
             </div>
 
             <ul className="list">
-              {active.ingredients.length === 0 && <li className="row-empty">Esta página está vacía. Agrega tu primer ingrediente abajo.</li>}
+              {active.ingredients.length === 0 && <li className="row-empty">Esta página está vacía.</li>}
               {active.ingredients.map((ing) => (
                 <li key={ing.id} className="row">
                   <div className="row-head">
@@ -195,79 +148,17 @@ export function Despensa({ state, actions, onBack }: { state: AppState; actions:
                     <span className="row-name">{ing.name}</span>
                   </div>
                   <div className="row-actions">
-                    <span className="stepper">
-                      <button className="step" onClick={() => actions.adjustIngredient(active.id, ing.id, -1)} aria-label="Restar">
-                        <Icon d={P.minus} size={14} />
-                      </button>
-                      <span className="qty">
-                        <span className="qty-num">{fmt(ing.amount, ing.unit)}</span>
-                        <span className="qty-unit">{ing.unit}</span>
-                      </span>
-                      <button className="step" onClick={() => actions.adjustIngredient(active.id, ing.id, 1)} aria-label="Sumar">
-                        <Icon d={P.plus} size={14} />
-                      </button>
-                    </span>
                     <span className="leader" aria-hidden />
-                    <button className="ghost danger" onClick={() => actions.removeIngredient(active.id, ing.id)} aria-label="Eliminar">
-                      <Icon d={P.x} size={14} />
-                    </button>
+                    <span className="qty">
+                      <span className="qty-num">{fmt(ing.amount, ing.unit)}</span>
+                      <span className="qty-unit">{ing.unit}</span>
+                    </span>
                   </div>
                 </li>
               ))}
             </ul>
-
-            <AddForm onAdd={(ing) => actions.addIngredient(active.id, ing)} />
           </section>
         )}
-      </div>
-    </div>
-  );
-}
-
-function AddForm({ onAdd }: { onAdd: (i: { name: string; type: "peso" | "unidad"; amount: number; unit: string }) => void }) {
-  const [name, setName] = useState("");
-  const [type, setType] = useState<"peso" | "unidad">("peso");
-  const [amount, setAmount] = useState("");
-  const [unit, setUnit] = useState("g");
-
-  const submit = () => {
-    const n = name.trim();
-    if (!n) return;
-    const amt = parseFloat(amount);
-    onAdd({ name: n, type, amount: isNaN(amt) ? 0 : Math.max(0, amt), unit: type === "unidad" ? "u" : unit });
-    setName("");
-    setAmount("");
-  };
-
-  return (
-    <div className="add">
-      <div className="add-line">
-        <input className="add-name" placeholder="Nombre del ingrediente" value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
-      </div>
-      <div className="add-line add-controls">
-        <div className="toggle" role="tablist" aria-label="Tipo de medida">
-          <button className={"tg " + (type === "peso" ? "tg-on" : "")} onClick={() => setType("peso")}>
-            Peso
-          </button>
-          <button className={"tg " + (type === "unidad" ? "tg-on" : "")} onClick={() => setType("unidad")}>
-            Unidad
-          </button>
-        </div>
-        <input className="add-amount" type="number" min="0" step="any" inputMode="decimal" placeholder="0" value={amount} onChange={(e) => setAmount(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
-        {type === "peso" ? (
-          <select className="add-unit" value={unit} onChange={(e) => setUnit(e.target.value)}>
-            {PESO_UNITS.map((u) => (
-              <option key={u} value={u}>
-                {u}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <span className="add-unit-fixed">u</span>
-        )}
-        <button className="primary add-btn" onClick={submit}>
-          <Icon d={P.plus} size={16} /> Agregar
-        </button>
       </div>
     </div>
   );
@@ -337,17 +228,12 @@ const css = `
 .tab-name{font-weight:600}
 .tab-count{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--oliveSoft);
   color:var(--olive);border-radius:999px;padding:1px 7px;min-width:20px;text-align:center}
-.tab-add{color:var(--olive);border-style:dashed;font-weight:600}
-.tab-adding{padding:4px 6px 4px 12px;background:var(--card);border-color:var(--olive)}
-.tab-input{border:none;background:transparent;font-family:inherit;font-size:13.5px;outline:none;
-  width:150px;color:var(--ink)}
 
 .sheet{background:var(--card);border:1px solid var(--line);border-radius:16px;
   padding:8px 20px 20px;box-shadow:0 1px 0 rgba(36,33,26,.03),0 14px 30px -22px rgba(36,33,26,.25)}
 .page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;
   padding:16px 2px 12px;border-bottom:1px solid var(--line)}
 .page-title{font-family:'Fraunces',serif;font-weight:560;font-size:23px;margin:0;letter-spacing:-.01em}
-.page-actions{display:flex;gap:4px}
 
 .list{list-style:none;margin:0;padding:6px 0 4px}
 .row{display:flex;flex-direction:column;gap:9px;padding:13px 2px}
@@ -363,49 +249,12 @@ const css = `
 .leader{flex:1 1 auto;min-width:14px;border-bottom:2px dotted var(--rule);
   transform:translateY(-3px);margin:0 2px}
 
-.stepper{display:flex;align-items:center;gap:6px;flex:0 0 auto}
-.step{width:24px;height:24px;border:1px solid var(--line);background:var(--paper);border-radius:7px;
-  display:grid;place-items:center;cursor:pointer;color:var(--inkSoft);transition:.13s;padding:0}
-.step:hover{border-color:var(--olive);color:var(--olive);background:var(--oliveSoft)}
 .qty{display:inline-flex;align-items:baseline;gap:4px;min-width:70px;justify-content:flex-end}
 .qty-num{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;color:var(--ink);
   font-variant-numeric:tabular-nums}
 .qty-unit{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--inkFaint);font-weight:500}
 
-.ghost{width:28px;height:28px;border:none;background:transparent;border-radius:7px;color:var(--inkFaint);
-  display:grid;place-items:center;cursor:pointer;transition:.13s;padding:0}
-.ghost:hover{background:var(--paper);color:var(--ink)}
-.ghost.danger:hover{background:var(--dangerSoft);color:var(--danger)}
-
 .row-empty{padding:12px 2px;color:var(--inkFaint);font-size:13.5px;font-style:italic}
-
-.add{margin-top:16px;padding-top:16px;border-top:2px solid var(--ink)}
-.add-line{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-.add-line + .add-line{margin-top:10px}
-.add-name{flex:1 1 auto;border:1px solid var(--line);border-radius:9px;padding:10px 12px;
-  font-family:inherit;font-size:15px;outline:none;background:var(--paper);color:var(--ink)}
-.toggle{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card)}
-.tg{border:none;background:transparent;padding:9px 14px;font-family:inherit;font-size:13.5px;font-weight:500;
-  cursor:pointer;color:var(--inkSoft);transition:.13s}
-.tg + .tg{border-left:1px solid var(--line)}
-.tg-on{background:var(--olive);color:#fff}
-.add-amount{width:88px;border:1px solid var(--line);border-radius:9px;padding:10px 11px;
-  font-family:'JetBrains Mono',monospace;font-size:15px;outline:none;background:var(--paper);color:var(--ink)}
-.add-unit{border:1px solid var(--line);border-radius:9px;padding:10px 8px;font-family:inherit;
-  font-size:13.5px;background:var(--card);color:var(--ink);outline:none;cursor:pointer}
-.add-unit-fixed{font-family:'JetBrains Mono',monospace;color:var(--inkFaint);font-size:14px;
-  padding:0 4px;min-width:22px;text-align:center}
-.add-btn{margin-left:auto}
-
-.primary{display:inline-flex;align-items:center;gap:7px;background:var(--olive);color:#fff;border:none;
-  border-radius:9px;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
-  transition:.15s}
-.primary:hover{background:#485824}
-.mini{width:30px;height:30px;border:1px solid var(--line);background:var(--card);border-radius:8px;
-  display:grid;place-items:center;cursor:pointer;color:var(--inkSoft);transition:.13s;padding:0}
-.mini:hover{border-color:var(--rule);color:var(--ink)}
-.mini.ok{background:var(--olive);border-color:var(--olive);color:#fff}
-.mini.ok:hover{background:#485824}
 
 .empty-card{text-align:center;color:var(--inkSoft);background:var(--card);border:1px dashed var(--rule);
   border-radius:16px;padding:44px 24px;display:flex;flex-direction:column;align-items:center;gap:8px}
@@ -418,7 +267,6 @@ const css = `
   .mast-title{font-size:28px}
   .qty{min-width:58px}
   .row-name{font-size:14.5px}
-  .add-btn{margin-left:0;width:100%;justify-content:center}
   .tally-label{display:none}
 }
 @media (prefers-reduced-motion:reduce){

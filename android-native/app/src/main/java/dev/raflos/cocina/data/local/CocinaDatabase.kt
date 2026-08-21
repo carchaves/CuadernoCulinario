@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [AppStateEntity::class], version = 1, exportSchema = false)
+@Database(entities = [AppStateEntity::class], version = 2, exportSchema = false)
 abstract class CocinaDatabase : RoomDatabase() {
     abstract fun appStateDao(): AppStateDao
 
@@ -18,7 +18,11 @@ abstract class CocinaDatabase : RoomDatabase() {
                     context.applicationContext,
                     CocinaDatabase::class.java,
                     "cocina.db",
-                ).build().also { instance = it }
+                )
+                    // La cache local es descartable: se puede volver a derivar de los archivos
+                    // del repo, así que no vale la pena escribir migraciones reales.
+                    .fallbackToDestructiveMigration()
+                    .build().also { instance = it }
             }
     }
 }

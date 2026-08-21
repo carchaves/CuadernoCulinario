@@ -7,9 +7,13 @@ import androidx.room.PrimaryKey
 data class AppStateEntity(
     @PrimaryKey val id: Int = 0,
     val json: String,
-    /** Última revisión del servidor sobre la que se basa este estado local. */
-    val revision: Int,
-    /** true si hay cambios locales que todavía no se confirmaron en el servidor. */
-    val pendingSync: Boolean,
+    /** `sha` del blob de GitHub sobre el que se basa cada archivo local (null si nunca se leyó). */
+    val despensaSha: String?,
+    val recetasSha: String?,
+    val listaSha: String?,
+    /** true si ese archivo tiene cambios locales que todavía no se commitearon en GitHub. */
+    val despensaDirty: Boolean,
+    val recetasDirty: Boolean,
+    val listaDirty: Boolean,
     val updatedAt: Long,
 )

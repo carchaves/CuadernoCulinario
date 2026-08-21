@@ -3,15 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "workspaces": [
-    "app",
-    "server"
+    "app"
   ],
   "scripts": {
     "dev": "npm run dev -w app",
     "build:app": "npm run build -w app",
-    "server:dev": "npm run dev -w server",
-    "server:build": "npm run build:app && npm run build -w server",
-    "server:start": "npm run start -w server",
     "android:build": "cd android-native && ./gradlew assembleDebug",
     "android:install": "adb install -r android-native/app/build/outputs/apk/debug/app-debug.apk",
     "android:run": "npm run android:build && npm run android:install && adb shell am start -n dev.raflos.cocina/.MainActivity"

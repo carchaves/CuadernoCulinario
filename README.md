@@ -1,104 +1,80 @@
 # Cocina App
 
-Despensa, recetas y lista de compra: app nativa de Android + página web, ambas conectadas a un
-mismo servidor propio (accesible desde cualquier lado, no solo en casa). Basada en el diseño de
-Claude Design "Integración de app de cocina".
+Despensa, recetas y lista de compra. Sin servidor ni base de datos: los datos viven como
+archivos JSON versionados en este mismo repositorio (`data/`). La app nativa de Android es
+la única que los edita — hace `pull` al abrir (si hay internet) y `commit` cuando hay
+cambios, directo contra la API de GitHub. La página web es un visor de solo lectura,
+publicado con GitHub Pages, que siempre muestra lo último que haya en `main`.
 
-**Producción:** https://cocina-app-server.onrender.com (login con el usuario creado vía `create-user`).
+**Web:** https://carchaves.github.io/CuadernoCulinario/
 
 ## Estructura
 
-- `server/` — backend propio: Node.js + Express + Prisma/Postgres (Neon), auth con JWT, y sirve
-  `app/dist` como página web en la misma URL. Desplegado en Render (`render.yaml` en la raíz,
-  Blueprint conectado al repo de GitHub — cada push a `main` redespliega solo).
-- `app/` — la página web (React + TypeScript + Vite). Habla con `server/` vía `fetch` con Bearer
-  token (`src/storage/serverStorage.ts`); no depende de ningún wrapper nativo.
-- `android-native/` — app Android nativa (Kotlin + Jetpack Compose, sin WebView). Room como
-  copia local (offline-first) + Retrofit contra el mismo backend, con sync automático (debounce al
-  editar, y al reabrir la app) y resolución de conflictos por `revision` (última escritura gana a
-  nivel de documento completo).
-
-Tanto la web como la app nativa comparten el mismo modelo de datos (`AppState`: despensa, recetas,
-lista de compra) y el mismo backend — un cambio hecho en una se ve en la otra.
+- `data/` — los tres archivos que son la única fuente de verdad: `despensa.json`,
+  `recetas.json`, `lista-de-compra.json`. Ver `data/README.md` para el schema de cada uno.
+- `app/` — el visor web (React + TypeScript + Vite). Solo lectura: al cargar pide los tres
+  archivos de `data/` directamente a `raw.githubusercontent.com` (repo público, sin auth) y
+  los muestra. No tiene login ni forma de editar. Publicado en GitHub Pages vía
+  `.github/workflows/deploy-pages.yml`.
+- `android-native/` — app Android nativa (Kotlin + Jetpack Compose, sin WebView), la única
+  editora. Room como copia local offline-first + un cliente de la API de contenidos de
+  GitHub, con sync automático (debounce al editar, y al reabrir la app) y resolución de
+  conflictos por `sha` de archivo (última escritura gana, por archivo).
 
 ## Comandos
 
 ```bash
-npm install                     # instala app/ y server/
-
-npm run dev                     # app en el navegador contra localStorage (sin backend)
-npm run server:dev              # servidor local en :8080 (necesita server/.env, ver abajo)
+npm install                     # instala app/
+npm run dev                     # visor web local (Vite), contra los datos reales del repo
+npm run build:app               # build de producción del visor web
 
 npm run android:build           # compila el APK debug (android-native/app/build/outputs/apk/debug)
 npm run android:install         # instala el último APK en el dispositivo conectado por adb
 npm run android:run             # build + install + abre la app
 ```
 
-Despliegue: no hay comando local — Render redespliega automáticamente con cada `git push` a `main`
-(Blueprint definido en `render.yaml`). Plan free: si no tiene tráfico un rato, la instancia se
-duerme y el primer request tarda ~30-50s en responder.
+## Cómo edita la app Android
 
-### Variables de entorno de `server/`
+`data/despensa.json`, `data/recetas.json` y `data/lista-de-compra.json` se leen/escriben vía
+la API de contenidos de GitHub (`GET`/`PUT
+repos/carchaves/CuadernoCulinario/contents/data/<archivo>`), usando el `sha` de cada blob
+como control de concurrencia.
 
-Copiar `server/.env.example` a `server/.env`:
+- Cada edición se guarda al instante en Room (offline-first, la UI nunca espera a la red).
+- ~800ms después de la última edición, se hace `commit` (uno por archivo que realmente
+  cambió) contra GitHub. Si no hay red, el cambio queda marcado como pendiente y se reintenta
+  la próxima vez que la app se abre o vuelve a primer plano.
+- Si el `sha` quedó desactualizado (otro commit se adelantó), se vuelve a pedir el archivo y
+  se reintenta con el `sha` nuevo — última escritura gana, a nivel de archivo.
 
-```
-DATABASE_URL="postgresql://..."   # connection string de Neon
-JWT_SECRET="..."                  # valor largo y aleatorio
-PORT=8080
-```
+La web nunca escribe: en cada carga vuelve a pedir los tres archivos a
+`raw.githubusercontent.com`, así que un commit hecho desde Android aparece ahí sin necesidad
+de ningún redeploy.
 
-En producción estas viven como variables de entorno de Render (marcadas `sync: false` en
-`render.yaml`, se cargan desde el dashboard de Render, no están en el repo).
+## Configurar el token de GitHub en la app Android
 
-### Migraciones de base de datos
+Como no hay servidor, la app necesita un credential propio para poder comitear. La primera
+vez que se abre (o desde el ícono de ajustes del menú) pide un **Personal Access Token** de
+GitHub:
 
-```bash
-cd server
-npx prisma migrate dev --name <nombre>   # genera y aplica una migración nueva contra DATABASE_URL
-```
+1. En GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
+   → Generate new token.
+2. Repository access: **Only select repositories** → `carchaves/CuadernoCulinario`.
+3. Permissions → Repository permissions → **Contents: Read and write**.
+4. Pegar el token generado en la pantalla de Ajustes de la app. Se guarda cifrado en el
+   dispositivo (`EncryptedSharedPreferences`), nunca en el repo.
 
-Nota: si `prisma migrate dev/status` falla con `P1001` (no llega al host) en esta red pero un
-script Node con `pg` sí conecta, es un problema de resolución DNS IPv6 específico de esta
-conexión (ver `src/db.ts`, que fuerza IPv4) — el motor de esquema de Prisma es un binario aparte
-que no respeta ese workaround. En ese caso: generar el SQL con
-`npx prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script`, guardarlo en
-`prisma/migrations/<timestamp>_<nombre>/migration.sql`, y aplicarlo a mano (ver
-`scripts/bootstrap-db.mjs` como referencia).
+## Despliegue de la web (GitHub Pages)
 
-### App Android nativa: apuntar a otro backend
+`.github/workflows/deploy-pages.yml` compila `app/` con Vite y publica `app/dist` en GitHub
+Pages en cada push a `main` que toque `app/`. Los cambios en `data/` **no** disparan un
+redeploy — no hace falta, la web pide los datos en vivo en cada carga.
 
-Por variable de Gradle, para probar contra un servidor local en vez de producción:
+Paso manual único (no se puede automatizar sin acceso a la cuenta): en el repo de GitHub, ir
+a **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-```bash
-./gradlew assembleDebug -PCOCINA_API_URL=http://127.0.0.1:8080
-adb reverse tcp:8080 tcp:8080   # si el celular está conectado por USB
-```
+## Historial
 
-El valor por defecto (`https://cocina-app-server.onrender.com`) está en
-`android-native/app/build.gradle.kts`.
-
-## Cómo sincroniza
-
-`AppState` (despensa, recetas, lista de compra) vive como una fila `jsonb` por usuario en Postgres,
-con un `revision` que se incrementa en cada `PUT /api/state` exitoso.
-
-- **Página web**: cada cambio hace `PUT` de inmediato; si el servidor devuelve 409 (alguien más
-  editó primero), reintenta con la revisión nueva — última escritura gana.
-- **App nativa**: cada edición se guarda al instante en Room (offline-first, la UI nunca espera a
-  la red) y se empuja al servidor con un debounce de ~800ms; si no hay red, queda marcada como
-  pendiente y se reintenta la próxima vez que la app se abre o vuelve a primer plano. Probado a
-  mano: editar sin conexión, confirmar que el servidor no cambia, reconectar, confirmar que llega.
-
-## Agregar recetas con Claude Cowork
-
-La pantalla "+ Crear nueva receta" de la página web (https://cocina-app-server.onrender.com, o
-`http://localhost:PORT` si `server:dev` está corriendo local) es la misma que usarías vos — Claude
-Cowork puede completarla manejando el navegador, sin necesidad de una API aparte.
-
-## Historial: por qué no está en Fly.io
-
-La primera versión de producción corrió en Fly.io, pero el trial gratuito se terminó y pasó a
-pedir tarjeta de crédito — se migró a Render (capa gratuita real, sin tarjeta). El código sigue
-siendo portable: `server/Dockerfile` es un Dockerfile estándar, así que mudarse a cualquier otro
-proveedor que soporte Docker es directo si hiciera falta de nuevo.
+La app corrió antes con un servidor propio (Node/Express + Prisma/Postgres en Neon,
+desplegado en Render) que migró primero desde Fly.io. Se eliminó por completo al pasar a
+guardar los datos directamente en este repo.

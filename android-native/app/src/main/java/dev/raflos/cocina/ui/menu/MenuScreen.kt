@@ -19,8 +19,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Inventory2
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,12 +46,16 @@ private val ITEMS = listOf(
 )
 
 @Composable
-fun MenuScreen(onGo: (MenuDestination) -> Unit) {
+fun MenuScreen(onGo: (MenuDestination) -> Unit, onSettings: () -> Unit) {
     SystemBarsAppearance(lightBackground = false)
     Box(
         modifier = Modifier.fillMaxSize().background(MenuColors.bg).windowInsetsPadding(WindowInsets.systemBars).padding(24.dp),
         contentAlignment = Alignment.Center,
     ) {
+        // Engranaje en la esquina (y no un 4to tile, que apretaría la fila de tres).
+        IconButton(onClick = onSettings, modifier = Modifier.align(Alignment.TopEnd)) {
+            Icon(Icons.Outlined.Settings, contentDescription = "Ajustes", tint = MenuColors.inkSoft)
+        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth(),

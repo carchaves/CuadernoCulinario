@@ -49,7 +49,6 @@ export function RecipeList({
   onOpen,
   onToggleSort,
   onToggleFilter,
-  onCreate,
 }: {
   recipes: Recipe[];
   rDone: Record<string, true>;
@@ -62,7 +61,6 @@ export function RecipeList({
   onOpen: (id: string) => void;
   onToggleSort: () => void;
   onToggleFilter: () => void;
-  onCreate: () => void;
 }) {
   let items: CardInfo[] = recipes.map((r, idx) => {
     let done = 0;
@@ -109,10 +107,6 @@ export function RecipeList({
           <Card info={info} accent={accent} onOpen={() => onOpen(info.recipe.id)} />
         </div>
       ))}
-
-      <button className="create-recipe" style={{ color: accent }} onClick={onCreate}>
-        + Crear nueva receta
-      </button>
     </>
   );
 }

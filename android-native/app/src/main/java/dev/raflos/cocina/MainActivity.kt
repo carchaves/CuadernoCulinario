@@ -24,17 +24,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import dev.raflos.cocina.data.SyncRepository
 import dev.raflos.cocina.data.local.CocinaDatabase
+import dev.raflos.cocina.data.remote.GithubDataSource
+import dev.raflos.cocina.data.remote.GithubTokenStore
 import dev.raflos.cocina.data.remote.NetworkModule
-import dev.raflos.cocina.data.remote.TokenStore
 import dev.raflos.cocina.ui.AppViewModel
 import dev.raflos.cocina.ui.despensa.DespensaScreen
 import dev.raflos.cocina.ui.lista.ListaDeCompraScreen
-import dev.raflos.cocina.ui.login.LoginScreen
 import dev.raflos.cocina.ui.menu.MenuDestination
 import dev.raflos.cocina.ui.menu.MenuScreen
 import dev.raflos.cocina.ui.recetas.RecetasScreen
+import dev.raflos.cocina.ui.settings.SettingsScreen
 
-private enum class Screen { MENU, DESPENSA, RECETAS, COMPRA }
+private enum class Screen { MENU, DESPENSA, RECETAS, COMPRA, SETTINGS }
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,17 +54,21 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun CocinaRoot() {
     val context = androidx.compose.ui.platform.LocalContext.current
-    val tokenStore = remember { TokenStore(context) }
-    var authed by remember { mutableStateOf(tokenStore.hasSession()) }
+    val githubTokenStore = remember { GithubTokenStore(context) }
+    var hasToken by remember { mutableStateOf(githubTokenStore.hasToken()) }
 
-    if (!authed) {
-        LoginScreen(tokenStore = tokenStore, onSuccess = { authed = true })
+    if (!hasToken) {
+        // Sin token no se puede leer ni escribir el repo: Ajustes es la primera pantalla.
+        SettingsScreen(tokenStore = githubTokenStore, onSaved = { hasToken = true })
         return
     }
 
-    val network = remember(authed) { NetworkModule(tokenStore) }
-    val repo = remember(authed) { SyncRepository(CocinaDatabase.get(context).appStateDao(), network.cocinaApi, network) }
-    val vm: AppViewModel = viewModel(factory = AppViewModel.Factory(repo), key = "app-$authed")
+    val network = remember(hasToken) { NetworkModule(githubTokenStore) }
+    val dataSource = remember(hasToken) {
+        GithubDataSource(network.contentsApi, BuildConfig.GITHUB_OWNER, BuildConfig.GITHUB_REPO)
+    }
+    val repo = remember(hasToken) { SyncRepository(CocinaDatabase.get(context).appStateDao(), dataSource) }
+    val vm: AppViewModel = viewModel(factory = AppViewModel.Factory(repo), key = "app-$hasToken")
 
     // Sync al abrir y cada vez que la app vuelve a primer plano.
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -93,9 +98,14 @@ private fun CocinaRoot() {
                 MenuDestination.RECETAS -> Screen.RECETAS
                 MenuDestination.COMPRA -> Screen.COMPRA
             }
-        })
+        }, onSettings = { screen = Screen.SETTINGS })
         Screen.DESPENSA -> DespensaScreen(currentState, vm, onBack = { screen = Screen.MENU })
         Screen.RECETAS -> RecetasScreen(currentState, vm, onBack = { screen = Screen.MENU })
         Screen.COMPRA -> ListaDeCompraScreen(currentState, vm, onBack = { screen = Screen.MENU })
+        Screen.SETTINGS -> SettingsScreen(
+            tokenStore = githubTokenStore,
+            onSaved = { screen = Screen.MENU },
+            onBack = { screen = Screen.MENU },
+        )
     }
 }

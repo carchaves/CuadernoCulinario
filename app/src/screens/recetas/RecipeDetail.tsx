@@ -1,6 +1,4 @@
-import { useState } from "react";
 import type { Ingredient, Recipe, RecipeView } from "../../core/types";
-import type { Actions } from "../../core/store";
 import { computeIngredientAvailability, splitIngredient, stepId } from "../../core/logic";
 
 function StepList({
@@ -11,7 +9,6 @@ function StepList({
   offset,
   rDone,
   accent,
-  actions,
 }: {
   steps: Recipe["prep"];
   view: RecipeView;
@@ -20,61 +17,24 @@ function StepList({
   offset: number;
   rDone: Record<string, true>;
   accent: string;
-  actions: Actions;
 }) {
-  const [editingIdx, setEditingIdx] = useState<number | null>(null);
-  const [noteInput, setNoteInput] = useState("");
-
   return (
     <div className="steps-list">
       {steps.map((st, i) => {
-        const id = stepId(view, recId, section, i);
-        const done = !!rDone[id];
+        const done = !!rDone[stepId(view, recId, section, i)];
         const n = offset + i + 1;
-        const isEditing = editingIdx === i;
         return (
-          <div key={i} className={"step-card" + (done ? " done" : "")} onClick={() => actions.toggleStep(id)}>
+          <div key={i} className={"step-card" + (done ? " done" : "")}>
             <div className="step-card-head">
               <div className="step-circle" style={{ background: done ? accent : undefined, borderColor: done ? accent : undefined, color: done ? "#fff" : undefined }}>
                 {done ? "✓" : n}
               </div>
               <h2 className="step-title">{st.title && st.title.trim() ? st.title : `Paso ${n}`}</h2>
-              <button
-                type="button"
-                className="note-icon"
-                title="Editar paso"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setEditingIdx(i);
-                  setNoteInput(st.t);
-                }}
-              >
-                🗒
-              </button>
             </div>
             <div className="step-card-body">
-              {!isEditing && <p className={"step-text" + (done ? " done" : "")}>{st.t}</p>}
+              <p className={"step-text" + (done ? " done" : "")}>{st.t}</p>
               {st.time && <div className="step-time" style={{ color: accent }}>⏱ {st.time}</div>}
-              {isEditing && (
-                <div onClick={(e) => e.stopPropagation()} style={{ marginTop: 10 }}>
-                  <textarea className="note-textarea" value={noteInput} onChange={(e) => setNoteInput(e.target.value)} placeholder="Editar paso…" />
-                  <div className="note-actions">
-                    <button
-                      type="button"
-                      style={{ background: accent }}
-                      onClick={() => {
-                        actions.saveStepText(view, recId, section, i, noteInput.trim());
-                        setEditingIdx(null);
-                      }}
-                    >
-                      Guardar
-                    </button>
-                    <button type="button" className="note-cancel" onClick={() => setEditingIdx(null)}>
-                      Cancelar
-                    </button>
-                  </div>
-                </div>
-              )}
+              {st.note && <p className="step-note">{st.note}</p>}
             </div>
           </div>
         );
@@ -91,9 +51,7 @@ export function RecipeDetail({
   pantryFlat,
   rDone,
   accent,
-  actions,
   onClose,
-  onEdit,
 }: {
   view: RecipeView;
   recipe: Recipe;
@@ -102,9 +60,7 @@ export function RecipeDetail({
   pantryFlat: Ingredient[];
   rDone: Record<string, true>;
   accent: string;
-  actions: Actions;
   onClose: () => void;
-  onEdit: () => void;
 }) {
   const { ingEn, ingPocas, ingSin } = computeIngredientAvailability(recipe.ingredientes, pantryFlat, servings);
   const plainIngredientes = recipe.ingredientes.map(splitIngredient);
@@ -222,29 +178,14 @@ export function RecipeDetail({
       {recipe.prePrep.length > 0 && (
         <>
           <h3 className="section-title">Pre-preparación</h3>
-          <StepList steps={recipe.prePrep} view={view} recId={recipe.id} section="pre" offset={0} rDone={rDone} accent={accent} actions={actions} />
+          <StepList steps={recipe.prePrep} view={view} recId={recipe.id} section="pre" offset={0} rDone={rDone} accent={accent} />
         </>
       )}
 
       <h3 className="section-title">
         Preparación <span className="section-time" style={{ color: accent }}>⏱ {recipe.tiempo}</span>
       </h3>
-      <StepList steps={recipe.prep} view={view} recId={recipe.id} section="prep" offset={recipe.prePrep.length} rDone={rDone} accent={accent} actions={actions} />
-
-      <div className="detail-actions">
-        <button className="edit-recipe" style={{ background: accent }} onClick={onEdit}>
-          ✎ Editar receta
-        </button>
-        <button
-          className="delete-recipe"
-          onClick={() => {
-            actions.deleteRecipe(view, recipe.id);
-            onClose();
-          }}
-        >
-          Eliminar receta
-        </button>
-      </div>
+      <StepList steps={recipe.prep} view={view} recId={recipe.id} section="prep" offset={recipe.prePrep.length} rDone={rDone} accent={accent} />
     </>
   );
 }
