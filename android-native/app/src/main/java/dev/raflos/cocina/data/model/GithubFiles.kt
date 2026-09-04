@@ -23,12 +23,15 @@ data class RecetasFile(
     val stepDone: Map<String, Boolean> = emptyMap(),
 )
 
-/** `data/lista-de-compra.json` — como el archivo se reescribe entero, arrays planos de ids
- * (más legibles en un diff de git) en vez del `Record<id, true>` interno. */
+/** `data/lista-de-compra.json` — listas por comercio, historial de precios, marcas boicoteadas y
+ * tickets. Mapeo 1:1 con el estado en memoria (mismo esquema que la web). */
 @Serializable
 data class ListaFile(
-    val includedIngredientIds: List<String> = emptyList(),
-    val doneIngredientIds: List<String> = emptyList(),
+    val stores: List<Store> = emptyList(),
+    val lists: List<ShoppingList> = emptyList(),
+    val priceHistory: Map<String, Map<String, Double>> = emptyMap(),
+    val boycottedBrands: Map<String, List<String>> = emptyMap(),
+    val receipts: List<Receipt> = emptyList(),
 )
 
 // ---- AppState -> archivo ----
@@ -38,19 +41,26 @@ fun AppState.toDespensaFile() = DespensaFile(pages = pPages, activePageId = pAct
 fun AppState.toRecetasFile() = RecetasFile(cocina = recipes.cocina, repo = recipes.repo, stepDone = rDone)
 
 fun AppState.toListaFile() = ListaFile(
-    includedIngredientIds = lIncluded.filterValues { it }.keys.toList(),
-    doneIngredientIds = lDone.filterValues { it }.keys.toList(),
+    stores = stores,
+    lists = lists,
+    priceHistory = priceHistory,
+    boycottedBrands = boycottedBrands,
+    receipts = receipts,
 )
 
 // ---- archivo -> AppState ----
 
 fun AppState.withDespensaFile(file: DespensaFile): AppState =
-    copy(pPages = file.pages, pActiveId = file.activePageId ?: file.pages.firstOrNull()?.id)
+    // Sin página activa se muestra el índice de repisas (navegación en dos niveles).
+    copy(pPages = file.pages, pActiveId = file.activePageId)
 
 fun AppState.withRecetasFile(file: RecetasFile): AppState =
     copy(recipes = RecipeBook(cocina = file.cocina, repo = file.repo), rDone = file.stepDone)
 
 fun AppState.withListaFile(file: ListaFile): AppState = copy(
-    lIncluded = file.includedIngredientIds.associateWith { true },
-    lDone = file.doneIngredientIds.associateWith { true },
+    stores = file.stores,
+    lists = file.lists,
+    priceHistory = file.priceHistory,
+    boycottedBrands = file.boycottedBrands,
+    receipts = file.receipts,
 )

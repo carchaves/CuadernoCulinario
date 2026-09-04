@@ -17,10 +17,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Book
-import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -33,16 +30,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.raflos.cocina.ui.SystemBarsAppearance
+import dev.raflos.cocina.ui.theme.BookIcon
+import dev.raflos.cocina.ui.theme.CartIcon
 import dev.raflos.cocina.ui.theme.MenuColors
+import dev.raflos.cocina.ui.theme.PantryShelfIcon
 
 enum class MenuDestination { DESPENSA, RECETAS, COMPRA }
 
 private data class MenuItem(val destination: MenuDestination, val label: String, val icon: ImageVector)
 
 private val ITEMS = listOf(
-    MenuItem(MenuDestination.DESPENSA, "Despensa", Icons.Outlined.Inventory2),
-    MenuItem(MenuDestination.RECETAS, "Recetas", Icons.Outlined.Book),
-    MenuItem(MenuDestination.COMPRA, "Lista de Compra", Icons.Outlined.ShoppingCart),
+    MenuItem(MenuDestination.DESPENSA, "Despensa", PantryShelfIcon),
+    MenuItem(MenuDestination.RECETAS, "Recetas", BookIcon),
+    MenuItem(MenuDestination.COMPRA, "Lista de Compra", CartIcon),
 )
 
 @Composable
@@ -90,7 +90,13 @@ private fun RowScope.MenuTile(label: String, icon: ImageVector, onClick: () -> U
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Icon(icon, contentDescription = label, tint = MenuColors.ink, modifier = Modifier.padding(bottom = 14.dp))
+        // El diseño dibuja el glifo al 46% del ancho del tile.
+        Icon(
+            icon,
+            contentDescription = label,
+            tint = MenuColors.ink,
+            modifier = Modifier.fillMaxWidth(0.46f).aspectRatio(1f).padding(bottom = 14.dp),
+        )
         Text(
             label.uppercase(),
             color = MenuColors.ink,

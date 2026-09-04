@@ -51,6 +51,27 @@ class GithubDataSource(
             ?: throw IOException("Respuesta sin sha al escribir $path")
     }
 
+    /** Igual que [putFile] pero para binarios (fotos de ticket): se manda el base64 crudo de los
+     * bytes en vez del de un texto JSON. */
+    suspend fun putBinaryFile(path: String, bytes: ByteArray, sha: String?, message: String): String {
+        val response = api.putFile(
+            owner, repo, path,
+            GithubPutRequest(
+                message = message,
+                content = Base64.encodeToString(bytes, Base64.NO_WRAP),
+                sha = sha,
+            ),
+        )
+        if (!response.isSuccessful) {
+            if (response.code() == 409 || response.code() == 422) {
+                throw GithubConflictException("Conflicto de sha al escribir $path")
+            }
+            throw IOException("GitHub respondió ${response.code()} al escribir $path")
+        }
+        return response.body()?.content?.sha
+            ?: throw IOException("Respuesta sin sha al escribir $path")
+    }
+
     /** GitHub devuelve el base64 cortado en líneas de 60 caracteres. */
     private fun decode(content: String): String =
         String(Base64.decode(content.replace("\n", ""), Base64.DEFAULT), Charsets.UTF_8)

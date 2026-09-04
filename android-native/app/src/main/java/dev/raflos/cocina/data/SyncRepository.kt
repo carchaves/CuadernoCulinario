@@ -128,6 +128,12 @@ class SyncRepository(
         scheduleDebouncedPush()
     }
 
+    /** Sube una foto de ticket al repo (binario, fuera del ciclo de los tres archivos JSON:
+     * es un archivo nuevo por vez y no participa del estado local). */
+    suspend fun uploadReceiptPhoto(path: String, bytes: ByteArray) {
+        ds.putBinaryFile(path, bytes, null, "Agregar foto de ticket desde la app")
+    }
+
     /** Empuja los cambios a GitHub ~800ms después de la última edición, mientras haya red;
      * si falla (sin conexión), el cambio queda en Room con su flag dirty y se reintenta en
      * el próximo [sync] (resume de la app, reconexión). */

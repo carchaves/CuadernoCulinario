@@ -32,6 +32,15 @@ object ListaColors {
     val inkSoft = Color(0xFF5C6353)
     val line = Color(0xFFE3E5DA)
     val cart = Color(0xFF2F9E6B)
+    val inkFaint = Color(0xFF8C9180)
+    val chip = Color(0xFFEEEFE8)
+    val panel = Color(0xFFF5F7F1)
+    val dashed = Color(0xFFC3C9B8)
+    val money = Color(0xFF2C6B45)
+    val moneySoft = Color(0xFFE8F1E5)
+    val boycott = Color(0xFF9E3B3B)
+    val boycottSoft = Color(0xFFF6E3E1)
+    val boycottLine = Color(0xFFEBC9C5)
     val palette = listOf(
         Color(0xFFC1494E), Color(0xFFB07A2E), Color(0xFF5A8F3C), Color(0xFFC79A2A),
         Color(0xFF4C7A93), Color(0xFF8C5E9E), Color(0xFFA65D8C),
