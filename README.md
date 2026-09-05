@@ -1,10 +1,11 @@
 # Cocina App
 
 Despensa, recetas y lista de compra. Sin servidor ni base de datos: los datos viven como
-archivos JSON versionados en este mismo repositorio (`data/`). La app nativa de Android es
-la única que los edita — hace `pull` al abrir (si hay internet) y `commit` cuando hay
-cambios, directo contra la API de GitHub. La página web es un visor de solo lectura,
-publicado con GitHub Pages, que siempre muestra lo último que haya en `main`.
+archivos JSON versionados en este mismo repositorio (`data/`). Tanto la app Android como la
+versión de escritorio de la web editan directo contra la API de GitHub — cada una con su
+propia copia local offline-first, su Personal Access Token propio, y el mismo criterio de
+concurrencia por `sha` de archivo (última escritura gana, por archivo), así que un cambio
+hecho en una aparece en la otra sin pisarse.
 
 **Web:** https://carchaves.github.io/CuadernoCulinario/
 
@@ -12,57 +13,57 @@ publicado con GitHub Pages, que siempre muestra lo último que haya en `main`.
 
 - `data/` — los tres archivos que son la única fuente de verdad: `despensa.json`,
   `recetas.json`, `lista-de-compra.json`. Ver `data/README.md` para el schema de cada uno.
-- `app/` — el visor web (React + TypeScript + Vite). Solo lectura: al cargar pide los tres
-  archivos de `data/` directamente a `raw.githubusercontent.com` (repo público, sin auth) y
-  los muestra. No tiene login ni forma de editar. Publicado en GitHub Pages vía
-  `.github/workflows/deploy-pages.yml`.
-- `android-native/` — app Android nativa (Kotlin + Jetpack Compose, sin WebView), la única
-  editora. Room como copia local offline-first + un cliente de la API de contenidos de
-  GitHub, con sync automático (debounce al editar, y al reabrir la app) y resolución de
-  conflictos por `sha` de archivo (última escritura gana, por archivo).
+- `app/` — versión de escritorio de la web (React + TypeScript + Vite), editable. Layout de
+  sidebar fijo pensado para pantalla ancha, no una versión de teléfono estirada. Guarda su
+  Personal Access Token en `localStorage`; sin token configurado sigue funcionando en modo
+  solo lectura. Publicada en GitHub Pages vía `.github/workflows/deploy-pages.yml`.
+- `android-native/` — app Android nativa (Kotlin + Jetpack Compose, sin WebView), la versión
+  para el celular. Room como copia local offline-first + un cliente de la API de contenidos de
+  GitHub, con sync automático (debounce al editar, y al reabrir la app).
 
 ## Comandos
 
 ```bash
 npm install                     # instala app/
 npm run dev                     # visor web local (Vite), contra los datos reales del repo
-npm run build:app               # build de producción del visor web
+npm run build:app               # build de producción de la web
 
 npm run android:build           # compila el APK debug (android-native/app/build/outputs/apk/debug)
 npm run android:install         # instala el último APK en el dispositivo conectado por adb
 npm run android:run             # build + install + abre la app
 ```
 
-## Cómo edita la app Android
+## Cómo sincronizan Android y la web
 
 `data/despensa.json`, `data/recetas.json` y `data/lista-de-compra.json` se leen/escriben vía
 la API de contenidos de GitHub (`GET`/`PUT
 repos/carchaves/CuadernoCulinario/contents/data/<archivo>`), usando el `sha` de cada blob
-como control de concurrencia.
+como control de concurrencia. Android usa Room y la web usa `localStorage` como caché local,
+pero el patrón es el mismo en las dos:
 
-- Cada edición se guarda al instante en Room (offline-first, la UI nunca espera a la red).
+- Cada edición se guarda al instante en la caché local (offline-first, la UI nunca espera a
+  la red).
 - ~800ms después de la última edición, se hace `commit` (uno por archivo que realmente
   cambió) contra GitHub. Si no hay red, el cambio queda marcado como pendiente y se reintenta
-  la próxima vez que la app se abre o vuelve a primer plano.
-- Si el `sha` quedó desactualizado (otro commit se adelantó), se vuelve a pedir el archivo y
-  se reintenta con el `sha` nuevo — última escritura gana, a nivel de archivo.
+  la próxima vez que se abre la app/pestaña o vuelve a primer plano.
+- Si el `sha` quedó desactualizado (otro commit se adelantó, desde el mismo cliente o el
+  otro), se vuelve a pedir el archivo y se reintenta con el `sha` nuevo — última escritura
+  gana, a nivel de archivo.
 
-La web nunca escribe: en cada carga vuelve a pedir los tres archivos a
-`raw.githubusercontent.com`, así que un commit hecho desde Android aparece ahí sin necesidad
-de ningún redeploy.
+## Configurar el token de GitHub
 
-## Configurar el token de GitHub en la app Android
-
-Como no hay servidor, la app necesita un credential propio para poder comitear. La primera
-vez que se abre (o desde el ícono de ajustes del menú) pide un **Personal Access Token** de
-GitHub:
+Como no hay servidor, cada cliente necesita su propio credential para poder comitear. Tanto
+Android (pantalla de Ajustes, ícono de engranaje del menú) como la web (mismo nombre, en el
+sidebar) piden un **Personal Access Token** de GitHub la primera vez:
 
 1. En GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
    → Generate new token.
 2. Repository access: **Only select repositories** → `carchaves/CuadernoCulinario`.
 3. Permissions → Repository permissions → **Contents: Read and write**.
-4. Pegar el token generado en la pantalla de Ajustes de la app. Se guarda cifrado en el
-   dispositivo (`EncryptedSharedPreferences`), nunca en el repo.
+4. Pegar el token generado en Ajustes. Android lo guarda cifrado en el dispositivo
+   (`EncryptedSharedPreferences`); la web lo guarda en `localStorage` del navegador. Nunca se
+   guarda en el repo — cada dispositivo/navegador necesita el suyo (se puede reusar el mismo
+   token en varios).
 
 ## Despliegue de la web (GitHub Pages)
 
@@ -77,4 +78,6 @@ a **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 La app corrió antes con un servidor propio (Node/Express + Prisma/Postgres en Neon,
 desplegado en Render) que migró primero desde Fly.io. Se eliminó por completo al pasar a
-guardar los datos directamente en este repo.
+guardar los datos directamente en este repo. La web fue al principio un visor de solo
+lectura y pasó a ser editable (versión de escritorio) más adelante, siguiendo el mismo diseño
+de referencia que guió la reescritura de Android.
