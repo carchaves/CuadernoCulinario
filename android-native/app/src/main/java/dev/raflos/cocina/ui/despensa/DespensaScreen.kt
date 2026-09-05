@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -107,32 +108,32 @@ fun DespensaScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
         LinkButton("← Menú", DespensaColors.inkSoft, onClick = onBack)
 
         // ---- Cabecera ----
-        Row(
-            Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 18.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top,
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("◧", color = DespensaColors.olive, fontSize = 30.sp)
-                Spacer(Modifier.width(14.dp))
-                Column {
-                    Text(
-                        "Despensa",
-                        color = DespensaColors.ink,
-                        fontFamily = FraunceFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 34.sp,
-                    )
-                    Text(
-                        "Inventario por peso y por unidad",
-                        color = DespensaColors.inkSoft,
-                        fontFamily = InterFamily,
-                        fontSize = 13.5.sp,
-                        modifier = Modifier.padding(top = 5.dp),
-                    )
+        Column(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 18.dp)) {
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top,
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("◧", color = DespensaColors.olive, fontSize = 30.sp)
+                    Spacer(Modifier.width(14.dp))
+                    Column {
+                        Text(
+                            "Despensa",
+                            color = DespensaColors.ink,
+                            fontFamily = FraunceFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 34.sp,
+                        )
+                        Text(
+                            "Inventario por peso y por unidad",
+                            color = DespensaColors.inkSoft,
+                            fontFamily = InterFamily,
+                            fontSize = 13.5.sp,
+                            modifier = Modifier.padding(top = 5.dp),
+                        )
+                    }
                 }
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     Modifier
                         .size(40.dp)
@@ -148,23 +149,27 @@ fun DespensaScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                         modifier = Modifier.size(18.dp),
                     )
                 }
-                if (active != null) {
-                    Spacer(Modifier.width(12.dp))
+            }
+            if (active != null) {
+                Row(
+                    Modifier.fillMaxWidth().padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Text(
                         "${active.ingredients.size}",
                         color = DespensaColors.olive,
                         fontFamily = JetBrainsMonoFamily,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 30.sp,
+                        fontSize = 24.sp,
                     )
                     Spacer(Modifier.width(7.dp))
                     Text(
-                        "ÍTEMS EN\nESTA PÁGINA",
+                        "ítems en esta página",
                         color = DespensaColors.inkFaint,
                         fontFamily = InterFamily,
-                        fontSize = 10.5.sp,
-                        letterSpacing = 0.9.sp,
-                        lineHeight = 13.sp,
+                        fontSize = 11.5.sp,
+                        letterSpacing = 0.3.sp,
                     )
                 }
             }
