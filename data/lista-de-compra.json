@@ -251,6 +251,13 @@
           "unit": null,
           "bought": false,
           "price": null
+        },
+        {
+          "ingredientId": "msq6urlri1i9n",
+          "quantity": 1,
+          "unit": "g",
+          "bought": false,
+          "price": null
         }
       ]
     }
