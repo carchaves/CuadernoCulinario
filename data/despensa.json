@@ -190,7 +190,7 @@
           "id": "msq6wquc4f67m",
           "name": "Tomate",
           "type": "unidad",
-          "amount": 0,
+          "amount": 8,
           "unit": "u"
         },
         {
@@ -463,8 +463,8 @@
           "id": "msq700x0fgmsq",
           "name": "Leche entera",
           "type": "peso",
-          "amount": 0,
-          "unit": "g"
+          "amount": 2,
+          "unit": "L"
         },
         {
           "id": "msq7019ypsq2n",
