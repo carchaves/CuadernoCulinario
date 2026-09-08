@@ -43,14 +43,14 @@
           "id": "msq6v8l44sqm0",
           "name": "Avena en hojuelas",
           "type": "peso",
-          "amount": 0,
+          "amount": 500,
           "unit": "g"
         },
         {
           "id": "msq6v8s7tih2i",
           "name": "Arroz blanco",
           "type": "peso",
-          "amount": 0,
+          "amount": 1000,
           "unit": "g"
         },
         {
@@ -85,7 +85,7 @@
           "id": "msq6v9xsuh8nu",
           "name": "Azúcar blanca",
           "type": "peso",
-          "amount": 0,
+          "amount": 1000,
           "unit": "g"
         },
         {
@@ -106,7 +106,7 @@
           "id": "msq6vapi3ha9u",
           "name": "Leche en polvo",
           "type": "peso",
-          "amount": 0,
+          "amount": 200,
           "unit": "g"
         },
         {
@@ -136,6 +136,55 @@
           "type": "unidad",
           "amount": 0,
           "unit": "u"
+        },
+        {
+          "id": "msqdau2cnkxep",
+          "name": "Garbanzos",
+          "type": "peso",
+          "amount": 2100,
+          "unit": "g"
+        },
+        {
+          "id": "msql043vsgqgd",
+          "name": "Arveja seca partida",
+          "type": "peso",
+          "amount": 1600,
+          "unit": "g"
+        },
+        {
+          "id": "msqs80ka5jhad",
+          "name": "Lentejas",
+          "type": "peso",
+          "amount": 400,
+          "unit": "g"
+        },
+        {
+          "id": "msqf8wxr4dq7r",
+          "name": "Espaguetis",
+          "type": "peso",
+          "amount": 1500,
+          "unit": "g"
+        },
+        {
+          "id": "msqxy10ptna38",
+          "name": "Harina común",
+          "type": "peso",
+          "amount": 2000,
+          "unit": "g"
+        },
+        {
+          "id": "msqn8cfmnms7y",
+          "name": "Maíz pisingallo",
+          "type": "peso",
+          "amount": 400,
+          "unit": "g"
+        },
+        {
+          "id": "msqzi0103b35t",
+          "name": "Café molido",
+          "type": "peso",
+          "amount": 1000,
+          "unit": "g"
         }
       ],
       "iconId": null
@@ -183,7 +232,7 @@
           "id": "msq6wqndkczsu",
           "name": "Pimiento verde",
           "type": "unidad",
-          "amount": 0,
+          "amount": 1,
           "unit": "u"
         },
         {
@@ -925,7 +974,7 @@
           "id": "msq74of0eqsko",
           "name": "Mantequilla de maní",
           "type": "peso",
-          "amount": 0,
+          "amount": 25,
           "unit": "g"
         },
         {
