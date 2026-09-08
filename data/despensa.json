@@ -190,7 +190,7 @@
           "id": "msq6wquc4f67m",
           "name": "Tomate",
           "type": "unidad",
-          "amount": 8,
+          "amount": 10,
           "unit": "u"
         },
         {
@@ -274,7 +274,7 @@
           "id": "msq6xg14gmb49",
           "name": "Plátano maduro",
           "type": "unidad",
-          "amount": 0,
+          "amount": 7,
           "unit": "u"
         },
         {
@@ -288,7 +288,7 @@
           "id": "msq6xghbyw10o",
           "name": "Limón",
           "type": "unidad",
-          "amount": 0,
+          "amount": 5,
           "unit": "u"
         },
         {
