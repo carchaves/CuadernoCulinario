@@ -99,7 +99,7 @@ fun ListaDeCompraScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                 Paso.DETALLE -> "Lista"
                 Paso.CHECKOUT -> "Finalizar compra"
             },
-            titulo = if (paso == Paso.INDICE) "Lista de compra" else (store?.name ?: "Lista"),
+            titulo = if (paso == Paso.INDICE) "Compras" else (store?.name ?: "Lista"),
             progreso = if (paso == Paso.DETALLE && lista != null && lista.items.isNotEmpty()) {
                 lista.items.count { it.bought } to lista.items.size
             } else null,

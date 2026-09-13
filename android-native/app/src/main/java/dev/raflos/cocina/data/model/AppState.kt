@@ -95,6 +95,9 @@ data class Receipt(
 data class AppState(
     val pPages: List<PantryPage> = emptyList(),
     val pActiveId: String? = null,
+    /** Menaje: mismo modelo que la despensa pero para utensilios y equipamiento (inventario aparte). */
+    val mPages: List<PantryPage> = emptyList(),
+    val mActiveId: String? = null,
     val stores: List<Store> = emptyList(),
     val lists: List<ShoppingList> = emptyList(),
     /** priceHistory[ingredientId][storeId] = precio */

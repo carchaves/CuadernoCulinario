@@ -15,6 +15,13 @@ data class DespensaFile(
     val activePageId: String? = null,
 )
 
+/** `data/menaje.json` — misma forma que `data/despensa.json`, pero para utensilios. */
+@Serializable
+data class MenajeFile(
+    val pages: List<PantryPage> = emptyList(),
+    val activePageId: String? = null,
+)
+
 /** `data/recetas.json` */
 @Serializable
 data class RecetasFile(
@@ -38,6 +45,8 @@ data class ListaFile(
 
 fun AppState.toDespensaFile() = DespensaFile(pages = pPages, activePageId = pActiveId)
 
+fun AppState.toMenajeFile() = MenajeFile(pages = mPages, activePageId = mActiveId)
+
 fun AppState.toRecetasFile() = RecetasFile(cocina = recipes.cocina, repo = recipes.repo, stepDone = rDone)
 
 fun AppState.toListaFile() = ListaFile(
@@ -53,6 +62,10 @@ fun AppState.toListaFile() = ListaFile(
 fun AppState.withDespensaFile(file: DespensaFile): AppState =
     // Sin página activa se muestra el índice de repisas (navegación en dos niveles).
     copy(pPages = file.pages, pActiveId = file.activePageId)
+
+fun AppState.withMenajeFile(file: MenajeFile): AppState =
+    // Igual que la despensa: sin página activa se muestra el índice de repisas.
+    copy(mPages = file.pages, mActiveId = file.activePageId)
 
 fun AppState.withRecetasFile(file: RecetasFile): AppState =
     copy(recipes = RecipeBook(cocina = file.cocina, repo = file.repo), rDone = file.stepDone)

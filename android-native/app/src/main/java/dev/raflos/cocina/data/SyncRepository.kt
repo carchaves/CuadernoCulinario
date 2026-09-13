@@ -5,12 +5,15 @@ import dev.raflos.cocina.data.local.AppStateEntity
 import dev.raflos.cocina.data.model.AppState
 import dev.raflos.cocina.data.model.DespensaFile
 import dev.raflos.cocina.data.model.ListaFile
+import dev.raflos.cocina.data.model.MenajeFile
 import dev.raflos.cocina.data.model.RecetasFile
 import dev.raflos.cocina.data.model.toDespensaFile
 import dev.raflos.cocina.data.model.toListaFile
+import dev.raflos.cocina.data.model.toMenajeFile
 import dev.raflos.cocina.data.model.toRecetasFile
 import dev.raflos.cocina.data.model.withDespensaFile
 import dev.raflos.cocina.data.model.withListaFile
+import dev.raflos.cocina.data.model.withMenajeFile
 import dev.raflos.cocina.data.model.withRecetasFile
 import dev.raflos.cocina.data.remote.GithubConflictException
 import dev.raflos.cocina.data.remote.GithubDataSource
@@ -32,6 +35,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
 
 private const val DESPENSA_PATH = "data/despensa.json"
+private const val MENAJE_PATH = "data/menaje.json"
 private const val RECETAS_PATH = "data/recetas.json"
 private const val LISTA_PATH = "data/lista-de-compra.json"
 
@@ -45,7 +49,7 @@ sealed class SyncResult {
  * (ver data/README.md). Offline-first: toda edición se guarda de inmediato en Room y se refleja
  * en la UI; el push/pull contra GitHub pasa en segundo plano (ver [sync]).
  *
- * El estado en memoria sigue siendo un [AppState] único, pero se persiste como tres archivos
+ * El estado en memoria sigue siendo un [AppState] único, pero se persiste como cuatro archivos
  * independientes: cada uno lleva su `sha` (concurrencia optimista de la Contents API) y su flag
  * `dirty`, y se commitea por separado — last-write-wins a nivel de archivo.
  */
@@ -60,14 +64,16 @@ class SyncRepository(
     val state: StateFlow<AppState?> = _state.asStateFlow()
 
     private var despensaSha: String? = null
+    private var menajeSha: String? = null
     private var recetasSha: String? = null
     private var listaSha: String? = null
 
     private var despensaDirty = false
+    private var menajeDirty = false
     private var recetasDirty = false
     private var listaDirty = false
 
-    private val pendingSync: Boolean get() = despensaDirty || recetasDirty || listaDirty
+    private val pendingSync: Boolean get() = despensaDirty || menajeDirty || recetasDirty || listaDirty
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var debouncedPush: Job? = null
@@ -77,16 +83,18 @@ class SyncRepository(
         if (local != null) {
             _state.value = decode(local.json)
             despensaSha = local.despensaSha
+            menajeSha = local.menajeSha
             recetasSha = local.recetasSha
             listaSha = local.listaSha
             despensaDirty = local.despensaDirty
+            menajeDirty = local.menajeDirty
             recetasDirty = local.recetasDirty
             listaDirty = local.listaDirty
         }
 
         try {
             // Si hay ediciones locales sin commitear, primero las subimos (no las pisamos con
-            // lo que haya en el repo); si no, traemos los tres archivos.
+            // lo que haya en el repo); si no, traemos los cuatro archivos.
             if (pendingSync) pushLocked() else pullLocked()
         } catch (e: Exception) {
             if (local == null) {
@@ -98,6 +106,7 @@ class SyncRepository(
                 val seeded = seedState()
                 _state.value = seeded
                 despensaDirty = missing
+                menajeDirty = missing
                 recetasDirty = missing
                 listaDirty = missing
                 persist(seeded)
@@ -121,6 +130,7 @@ class SyncRepository(
             // puede tocar dos (ej. agregar un artículo toca despensa y lista) y son dos commits.
             // Se acumulan con OR: lo que quedó sucio antes sigue sucio.
             despensaDirty = despensaDirty || current.toDespensaFile() != next.toDespensaFile()
+            menajeDirty = menajeDirty || current.toMenajeFile() != next.toMenajeFile()
             recetasDirty = recetasDirty || current.toRecetasFile() != next.toRecetasFile()
             listaDirty = listaDirty || current.toListaFile() != next.toListaFile()
             persist(next)
@@ -128,7 +138,7 @@ class SyncRepository(
         scheduleDebouncedPush()
     }
 
-    /** Sube una foto de ticket al repo (binario, fuera del ciclo de los tres archivos JSON:
+    /** Sube una foto de ticket al repo (binario, fuera del ciclo de los cuatro archivos JSON:
      * es un archivo nuevo por vez y no participa del estado local). */
     suspend fun uploadReceiptPhoto(path: String, bytes: ByteArray) {
         ds.putBinaryFile(path, bytes, null, "Agregar foto de ticket desde la app")
@@ -161,12 +171,13 @@ class SyncRepository(
         }
     }
 
-    /** GET de los tres archivos en paralelo. No se pisa un archivo con cambios locales sin
+    /** GET de los cuatro archivos en paralelo. No se pisa un archivo con cambios locales sin
      * commitear: ese se resuelve al subirlo (409 → reintento con el sha fresco). */
     private suspend fun pullLocked() {
         val remote = coroutineScope {
             listOf(
                 async { ds.fetchFile(DESPENSA_PATH) },
+                async { ds.fetchFile(MENAJE_PATH) },
                 async { ds.fetchFile(RECETAS_PATH) },
                 async { ds.fetchFile(LISTA_PATH) },
             ).awaitAll()
@@ -177,13 +188,17 @@ class SyncRepository(
             next = next.withDespensaFile(json.decodeFromString(DespensaFile.serializer(), remote[0].first))
             despensaSha = remote[0].second
         }
+        if (!menajeDirty) {
+            next = next.withMenajeFile(json.decodeFromString(MenajeFile.serializer(), remote[1].first))
+            menajeSha = remote[1].second
+        }
         if (!recetasDirty) {
-            next = next.withRecetasFile(json.decodeFromString(RecetasFile.serializer(), remote[1].first))
-            recetasSha = remote[1].second
+            next = next.withRecetasFile(json.decodeFromString(RecetasFile.serializer(), remote[2].first))
+            recetasSha = remote[2].second
         }
         if (!listaDirty) {
-            next = next.withListaFile(json.decodeFromString(ListaFile.serializer(), remote[2].first))
-            listaSha = remote[2].second
+            next = next.withListaFile(json.decodeFromString(ListaFile.serializer(), remote[3].first))
+            listaSha = remote[3].second
         }
         _state.value = next
         persist(next)
@@ -204,6 +219,19 @@ class SyncRepository(
                     "Actualizar despensa desde la app",
                 )
                 despensaDirty = false
+            } catch (e: Exception) {
+                failure = e
+            }
+        }
+        if (menajeDirty) {
+            try {
+                menajeSha = pushFile(
+                    MENAJE_PATH,
+                    json.encodeToString(MenajeFile.serializer(), current.toMenajeFile()),
+                    menajeSha,
+                    "Actualizar menaje desde la app",
+                )
+                menajeDirty = false
             } catch (e: Exception) {
                 failure = e
             }
@@ -254,9 +282,11 @@ class SyncRepository(
             AppStateEntity(
                 json = encode(state),
                 despensaSha = despensaSha,
+                menajeSha = menajeSha,
                 recetasSha = recetasSha,
                 listaSha = listaSha,
                 despensaDirty = despensaDirty,
+                menajeDirty = menajeDirty,
                 recetasDirty = recetasDirty,
                 listaDirty = listaDirty,
                 updatedAt = System.currentTimeMillis(),

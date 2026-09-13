@@ -30,12 +30,13 @@ import dev.raflos.cocina.data.remote.NetworkModule
 import dev.raflos.cocina.ui.AppViewModel
 import dev.raflos.cocina.ui.despensa.DespensaScreen
 import dev.raflos.cocina.ui.lista.ListaDeCompraScreen
+import dev.raflos.cocina.ui.menaje.MenajeScreen
 import dev.raflos.cocina.ui.menu.MenuDestination
 import dev.raflos.cocina.ui.menu.MenuScreen
 import dev.raflos.cocina.ui.recetas.RecetasScreen
 import dev.raflos.cocina.ui.settings.SettingsScreen
 
-private enum class Screen { MENU, DESPENSA, RECETAS, COMPRA, SETTINGS }
+private enum class Screen { MENU, DESPENSA, MENAJE, RECETAS, COMPRA, SETTINGS }
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,11 +96,13 @@ private fun CocinaRoot() {
         Screen.MENU -> MenuScreen(onGo = { dest ->
             screen = when (dest) {
                 MenuDestination.DESPENSA -> Screen.DESPENSA
+                MenuDestination.MENAJE -> Screen.MENAJE
                 MenuDestination.RECETAS -> Screen.RECETAS
                 MenuDestination.COMPRA -> Screen.COMPRA
             }
         }, onSettings = { screen = Screen.SETTINGS })
         Screen.DESPENSA -> DespensaScreen(currentState, vm, onBack = { screen = Screen.MENU })
+        Screen.MENAJE -> MenajeScreen(currentState, vm, onBack = { screen = Screen.MENU })
         Screen.RECETAS -> RecetasScreen(currentState, vm, onBack = { screen = Screen.MENU })
         Screen.COMPRA -> ListaDeCompraScreen(currentState, vm, onBack = { screen = Screen.MENU })
         Screen.SETTINGS -> SettingsScreen(

@@ -79,6 +79,16 @@ val CartIcon: ImageVector = lineIcon(
     "M37 35.4 a2.6 2.6 0 1 0 0 5.2 a2.6 2.6 0 1 0 0 -5.2 Z",
 )
 
+/** Tenedor y cuchillo (Menaje). */
+val UtensilsIcon: ImageVector = lineIcon(
+    "Utensils", 52f, 2f,
+    "M18 11 v10 a4 4 0 0 1 -8 0 V11",
+    "M14 11 v10",
+    "M14 25 v16",
+    "M38 11 c5 6 5 12 4 16 h-8 c-1 -4 -1 -10 4 -16 Z",
+    "M38 27 v14",
+)
+
 // ---- Íconos chicos (viewBox 24, stroke ~1.8) ----
 
 /** Carrito compacto del botón "enviar a la lista" de cada ingrediente en Despensa. */

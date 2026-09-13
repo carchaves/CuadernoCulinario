@@ -112,6 +112,42 @@ class AppViewModel(private val repo: SyncRepository) : ViewModel() {
         s.copy(pPages = pages)
     }
 
+    // ---- Menaje ----
+    // Mismo modelo que Despensa pero sobre `mPages`/`mActiveId`: son inventarios independientes.
+    fun addMenajePage(name: String): String {
+        val id = uid()
+        mutate { s -> s.copy(mPages = s.mPages + PantryPage(id, name), mActiveId = id) }
+        return id
+    }
+
+    fun deleteMenajePage(pageId: String) = mutate { s ->
+        val next = s.mPages.filter { it.id != pageId }
+        s.copy(mPages = next, mActiveId = if (s.mActiveId == pageId) next.firstOrNull()?.id else s.mActiveId)
+    }
+
+    fun setActiveMenajePage(pageId: String?) = mutate { it.copy(mActiveId = pageId) }
+
+    fun setMenajePageIcon(pageId: String, iconId: String) = mutate { s ->
+        s.copy(mPages = s.mPages.map { if (it.id == pageId) it.copy(iconId = iconId) else it })
+    }
+
+    fun addMenajeItem(pageId: String, name: String, type: String, amount: Double, unit: String) = mutate { s ->
+        val ing = Ingredient(uid(), name, type, amount, unit)
+        s.copy(mPages = s.mPages.map { if (it.id == pageId) it.copy(ingredients = it.ingredients + ing) else it })
+    }
+
+    fun adjustMenajeItem(pageId: String, ingId: String, dir: Int) = mutate { s ->
+        s.copy(mPages = s.mPages.map { page ->
+            if (page.id != pageId) page else page.copy(ingredients = page.ingredients.map { ing ->
+                if (ing.id != ingId) ing else ing.copy(amount = roundFor(ing.amount + dir * stepFor(ing.unit), ing.unit))
+            })
+        })
+    }
+
+    fun removeMenajeItem(pageId: String, ingId: String) = mutate { s ->
+        s.copy(mPages = s.mPages.map { if (it.id == pageId) it.copy(ingredients = it.ingredients.filterNot { i -> i.id == ingId }) else it })
+    }
+
     // ---- Lista de compra ----
     fun addShoppingItem(name: String, amount: Double, unit: String, pageId: String) = mutate { s ->
         val pantryFlat = s.pPages.flatMap { it.ingredients }

@@ -9,10 +9,12 @@ data class AppStateEntity(
     val json: String,
     /** `sha` del blob de GitHub sobre el que se basa cada archivo local (null si nunca se leyó). */
     val despensaSha: String?,
+    val menajeSha: String?,
     val recetasSha: String?,
     val listaSha: String?,
     /** true si ese archivo tiene cambios locales que todavía no se commitearon en GitHub. */
     val despensaDirty: Boolean,
+    val menajeDirty: Boolean,
     val recetasDirty: Boolean,
     val listaDirty: Boolean,
     val updatedAt: Long,
