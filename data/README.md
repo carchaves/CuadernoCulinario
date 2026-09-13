@@ -1,6 +1,6 @@
 # Datos de Cocina App
 
-Estos tres archivos son la única fuente de verdad de la app: no hay servidor ni base de
+Estos cuatro archivos son la única fuente de verdad de la app: no hay servidor ni base de
 datos, solo estos JSON versionados en git.
 
 - **Quién escribe:** la app Android y la web de escritorio (`app/`, publicada en GitHub
@@ -29,6 +29,22 @@ datos, solo estos JSON versionados en git.
 
 `type` es `"peso"` (con `unit` en `g`/`kg`/`ml`/`L`) o `"unidad"` (con `unit: "u"`).
 
+## `menaje.json`
+
+Mismo esquema que `despensa.json` (páginas con ícono + ítems), para inventario de utensilios
+y equipamiento de cocina en vez de ingredientes:
+
+```json
+{
+  "pages": [
+    { "id": "p1", "name": "Ollas y sartenes", "ingredients": [
+      { "id": "i1", "name": "Sartén de hierro 28cm", "type": "unidad", "amount": 1, "unit": "u" }
+    ] }
+  ],
+  "activePageId": "p1"
+}
+```
+
 ## `recetas.json`
 
 ```json
@@ -48,6 +64,8 @@ datos, solo estos JSON versionados en git.
 preparación quedaron completados, con clave `"{vista}.{idReceta}.{pre|prep}.{índice}"`.
 
 ## `lista-de-compra.json`
+
+(la sección se llama "Compras" en la app; el archivo mantiene su nombre histórico)
 
 ```json
 {

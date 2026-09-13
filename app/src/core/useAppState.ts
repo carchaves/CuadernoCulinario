@@ -1,26 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as gh from "./github";
 import { getToken } from "./githubToken";
-import type { AppState, DespensaFile, ListaFile, RecetasFile } from "./types";
+import type { AppState, DespensaFile, ListaFile, MenajeFile, RecetasFile } from "./types";
 
 /**
  * Fuente de verdad local (localStorage) + reconciliación con el repo de GitHub, que hace de
  * backend (ver `data/README.md`). Puerto web de `SyncRepository.kt`: offline-first, toda edición
  * se guarda de inmediato y se refleja en la UI; el push pasa después (debounce de 800ms).
  *
- * El estado en memoria es un único [AppState], pero se persiste como tres archivos
+ * El estado en memoria es un único [AppState], pero se persiste como cuatro archivos
  * independientes: cada uno lleva su `sha` y su flag `dirty`, y se commitea por separado
  * (last-write-wins a nivel de archivo).
  */
 
 const DESPENSA_PATH = "data/despensa.json";
+const MENAJE_PATH = "data/menaje.json";
 const RECETAS_PATH = "data/recetas.json";
 const LISTA_PATH = "data/lista-de-compra.json";
 
 const CACHE_KEY = "cocina_cache_v1";
 const PUSH_DEBOUNCE_MS = 800;
 
-type Slice = "despensa" | "recetas" | "lista";
+type Slice = "despensa" | "menaje" | "recetas" | "lista";
 type Shas = Record<Slice, string | null>;
 type Dirty = Record<Slice, boolean>;
 
@@ -30,14 +31,19 @@ interface Cache {
   dirty: Dirty;
 }
 
-const emptyShas = (): Shas => ({ despensa: null, recetas: null, lista: null });
-const emptyDirty = (): Dirty => ({ despensa: false, recetas: false, lista: false });
+const emptyShas = (): Shas => ({ despensa: null, menaje: null, recetas: null, lista: null });
+const emptyDirty = (): Dirty => ({ despensa: false, menaje: false, recetas: false, lista: false });
 
 // ---- Traducción AppState <-> archivos --------------------------------------
 
 export const toDespensaFile = (s: AppState): DespensaFile => ({
   pages: s.pPages,
   activePageId: s.pActiveId,
+});
+
+export const toMenajeFile = (s: AppState): MenajeFile => ({
+  pages: s.mPages,
+  activePageId: s.mActiveId,
 });
 
 export const toRecetasFile = (s: AppState): RecetasFile => ({
@@ -64,6 +70,8 @@ const trueKeys = (map: Record<string, boolean> | undefined): Record<string, true
 export const emptyState = (): AppState => ({
   pPages: [],
   pActiveId: null,
+  mPages: [],
+  mActiveId: null,
   stores: [],
   lists: [],
   priceHistory: {},
@@ -76,6 +84,11 @@ export const emptyState = (): AppState => ({
 export function withDespensaFile(s: AppState, f: DespensaFile): AppState {
   const pPages = f.pages ?? [];
   return { ...s, pPages, pActiveId: f.activePageId ?? (pPages.length ? pPages[0].id : null) };
+}
+
+export function withMenajeFile(s: AppState, f: MenajeFile): AppState {
+  const mPages = f.pages ?? [];
+  return { ...s, mPages, mActiveId: f.activePageId ?? (mPages.length ? mPages[0].id : null) };
 }
 
 export function withRecetasFile(s: AppState, f: RecetasFile): AppState {
@@ -124,18 +137,21 @@ function saveCache(cache: Cache): void {
 
 const COMMIT_MESSAGE: Record<Slice, string> = {
   despensa: "Actualizar despensa desde la web",
+  menaje: "Actualizar menaje desde la web",
   recetas: "Actualizar recetas desde la web",
   lista: "Actualizar lista de compra desde la web",
 };
 
 const PATHS: Record<Slice, string> = {
   despensa: DESPENSA_PATH,
+  menaje: MENAJE_PATH,
   recetas: RECETAS_PATH,
   lista: LISTA_PATH,
 };
 
 const SLICE_OF: Record<Slice, (s: AppState) => unknown> = {
   despensa: toDespensaFile,
+  menaje: toMenajeFile,
   recetas: toRecetasFile,
   lista: toListaFile,
 };
@@ -172,7 +188,7 @@ export function useAppState(): AppStore {
   const pushTimer = useRef<number | null>(null);
   const busy = useRef(false);
 
-  const anyDirty = () => dirtyRef.current.despensa || dirtyRef.current.recetas || dirtyRef.current.lista;
+  const anyDirty = () => dirtyRef.current.despensa || dirtyRef.current.menaje || dirtyRef.current.recetas || dirtyRef.current.lista;
 
   const commitLocal = useCallback((next: AppState) => {
     stateRef.current = next;
@@ -181,11 +197,12 @@ export function useAppState(): AppStore {
     saveCache({ data: next, shas: shasRef.current, dirty: dirtyRef.current });
   }, []);
 
-  /** GET de los tres archivos en paralelo. No se pisa un archivo con cambios locales sin
+  /** GET de los cuatro archivos en paralelo. No se pisa un archivo con cambios locales sin
    * commitear: ese se resuelve al subirlo (409 → reintento con el sha fresco). */
   const pull = useCallback(async () => {
-    const [despensa, recetas, lista] = await Promise.all([
+    const [despensa, menaje, recetas, lista] = await Promise.all([
       gh.fetchFile(DESPENSA_PATH),
+      gh.fetchFile(MENAJE_PATH),
       gh.fetchFile(RECETAS_PATH),
       gh.fetchFile(LISTA_PATH),
     ]);
@@ -193,6 +210,10 @@ export function useAppState(): AppStore {
     if (!dirtyRef.current.despensa) {
       next = withDespensaFile(next, despensa.json as DespensaFile);
       shasRef.current.despensa = despensa.sha;
+    }
+    if (!dirtyRef.current.menaje) {
+      next = withMenajeFile(next, menaje.json as MenajeFile);
+      shasRef.current.menaje = menaje.sha;
     }
     if (!dirtyRef.current.recetas) {
       next = withRecetasFile(next, recetas.json as RecetasFile);
@@ -212,7 +233,7 @@ export function useAppState(): AppStore {
     if (!current) return;
     if (getToken() == null) throw new gh.NoTokenError();
     let failure: unknown = null;
-    for (const slice of ["despensa", "recetas", "lista"] as Slice[]) {
+    for (const slice of ["despensa", "menaje", "recetas", "lista"] as Slice[]) {
       if (!dirtyRef.current[slice]) continue;
       try {
         shasRef.current[slice] = await gh.putFile(
@@ -327,6 +348,7 @@ export function useAppState(): AppStore {
       // lo que quedó sucio antes sigue sucio.
       dirtyRef.current = {
         despensa: dirtyRef.current.despensa || !sameSlice(toDespensaFile(current), toDespensaFile(next)),
+        menaje: dirtyRef.current.menaje || !sameSlice(toMenajeFile(current), toMenajeFile(next)),
         recetas: dirtyRef.current.recetas || !sameSlice(toRecetasFile(current), toRecetasFile(next)),
         lista: dirtyRef.current.lista || !sameSlice(toListaFile(current), toListaFile(next)),
       };

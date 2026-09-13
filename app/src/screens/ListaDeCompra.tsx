@@ -120,7 +120,7 @@ export function ListaDeCompra({ store, state }: { store: AppStore; state: AppSta
       <style>{css}</style>
 
       <aside className="index">
-        <h1>Lista de compra</h1>
+        <h1>Compras</h1>
         <p className="sub">Listas por comercio</p>
         {editable && (
           <button className="new-list" onClick={() => setNewListOpen(true)}>

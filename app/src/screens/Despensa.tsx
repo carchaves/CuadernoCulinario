@@ -167,7 +167,7 @@ export function Despensa({ store, state }: { store: AppStore; state: AppState })
                     {fmt(r.amount, r.unit)} {r.unit}
                   </span>
                   {editable && (
-                    <button className="cart-btn" title="Enviar a la lista de compra" onClick={() => setSend({ ingredient: r })}>
+                    <button className="cart-btn" title="Enviar a Compras" onClick={() => setSend({ ingredient: r })}>
                       🛒
                     </button>
                   )}
@@ -314,7 +314,7 @@ export function Despensa({ store, state }: { store: AppStore; state: AppState })
                     )}
                     {editable && (
                       <>
-                        <button className="cart-btn" title="Enviar a la lista de compra" onClick={() => setSend({ ingredient: ing })}>
+                        <button className="cart-btn" title="Enviar a Compras" onClick={() => setSend({ ingredient: ing })}>
                           🛒
                         </button>
                         <button className="icon-btn" title="Quitar" onClick={() => removeIngredient(active.id, ing.id)}>

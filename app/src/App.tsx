@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useAppState } from "./core/useAppState";
 import { Despensa } from "./screens/Despensa";
 import { ListaDeCompra } from "./screens/ListaDeCompra";
+import { Menaje } from "./screens/Menaje";
 import { Recetas } from "./screens/Recetas";
 import { Settings } from "./screens/Settings";
 
-type Section = "despensa" | "recetas" | "compra" | "ajustes";
+type Section = "despensa" | "menaje" | "recetas" | "compra" | "ajustes";
 
 const COLORS = {
   bg: "#161311",
@@ -23,6 +24,16 @@ function PotIcon() {
       <path d="M26 12 v4" />
       <path d="M15 24 a3 3 0 0 1 -4 0" />
       <path d="M37 24 a3 3 0 0 0 4 0" />
+    </svg>
+  );
+}
+
+function UtensilsIcon() {
+  return (
+    <svg viewBox="0 0 52 52" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 42 L34 14" />
+      <path d="M34 42 L24 26" />
+      <path d="M16 12 v9 a4 4 0 0 0 8 0 v-9" />
     </svg>
   );
 }
@@ -59,8 +70,9 @@ function GearIcon() {
 
 const NAV = [
   { key: "despensa", label: "Despensa", Icon: PotIcon },
+  { key: "menaje", label: "Menaje", Icon: UtensilsIcon },
   { key: "recetas", label: "Recetas", Icon: BookIcon },
-  { key: "compra", label: "Lista de Compra", Icon: CartIcon },
+  { key: "compra", label: "Compras", Icon: CartIcon },
 ] as const;
 
 function App() {
@@ -136,6 +148,8 @@ function App() {
           </div>
         ) : section === "despensa" ? (
           <Despensa store={store} state={state} />
+        ) : section === "menaje" ? (
+          <Menaje store={store} state={state} />
         ) : section === "recetas" ? (
           <Recetas store={store} state={state} />
         ) : (

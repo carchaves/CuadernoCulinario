@@ -77,6 +77,9 @@ export type BoycottedBrands = Record<string, string[]>;
 export interface AppState {
   pPages: PantryPage[];
   pActiveId: string | null;
+  /** Menaje: inventario de utensilios y equipamiento, independiente de la despensa. */
+  mPages: PantryPage[];
+  mActiveId: string | null;
   stores: Store[];
   lists: ShoppingList[];
   priceHistory: PriceHistory;
@@ -91,6 +94,11 @@ export interface AppState {
 // `useAppState` los traduce al `AppState` en memoria de arriba.
 
 export interface DespensaFile {
+  pages: PantryPage[];
+  activePageId: string | null;
+}
+
+export interface MenajeFile {
   pages: PantryPage[];
   activePageId: string | null;
 }
