@@ -48,11 +48,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -66,10 +64,9 @@ import dev.raflos.cocina.data.model.Ingredient
 import dev.raflos.cocina.data.model.PantryPage
 import dev.raflos.cocina.ui.AppViewModel
 import dev.raflos.cocina.ui.SystemBarsAppearance
-import dev.raflos.cocina.ui.theme.DespensaColors
-import dev.raflos.cocina.ui.theme.FraunceFamily
 import dev.raflos.cocina.ui.theme.InterFamily
 import dev.raflos.cocina.ui.theme.JetBrainsMonoFamily
+import dev.raflos.cocina.ui.theme.MenajeColors
 import dev.raflos.cocina.ui.theme.PantryIconOptions
 import dev.raflos.cocina.ui.theme.SearchLineIcon
 import dev.raflos.cocina.ui.theme.StarIcon
@@ -82,8 +79,8 @@ private val UNITS = listOf("u", "g", "kg", "ml", "L")
  * inventario de utensilios. Se mantiene como pantalla paralela a propósito, para no tocar la
  * Despensa ya en uso.
  *
- * Navegación en dos niveles como el diseño: el índice de "Repisas" (grilla de a 3 con divisores
- * tipo madera) y la repisa activa aparte. `mActiveId == null` es el índice.
+ * Navegación en dos niveles como el diseño: el índice de "Cajones" (grilla de a 3) y el
+ * cajón activo aparte. `mActiveId == null` es el índice.
  */
 @Composable
 fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
@@ -97,18 +94,18 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
     val activeIndex = state.mPages.indexOfFirst { it.id == state.mActiveId }
 
     SystemBarsAppearance(lightBackground = true)
-    // Un paso por vez: desde una repisa, "atrás" vuelve al índice; desde el índice, al Menú.
+    // Un paso por vez: desde un cajón, "atrás" vuelve al índice; desde el índice, al Menú.
     BackHandler { if (active != null) vm.setActiveMenajePage(null) else onBack() }
 
     Column(
         Modifier
             .fillMaxSize()
-            .background(DespensaColors.paper)
+            .background(MenajeColors.paper)
             .windowInsetsPadding(WindowInsets.systemBars)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
-        LinkButton("← Menú", DespensaColors.inkSoft, onClick = onBack)
+        LinkButton("← Menú", MenajeColors.inkSoft, onClick = onBack)
 
         // ---- Cabecera ----
         Column(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 18.dp)) {
@@ -118,19 +115,20 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                 verticalAlignment = Alignment.Top,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("◧", color = DespensaColors.olive, fontSize = 30.sp)
+                    Text("◧", color = MenajeColors.steel, fontSize = 30.sp)
                     Spacer(Modifier.width(14.dp))
                     Column {
                         Text(
-                            "Menaje",
-                            color = DespensaColors.ink,
-                            fontFamily = FraunceFamily,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 34.sp,
+                            "MENAJE",
+                            color = MenajeColors.ink,
+                            fontFamily = JetBrainsMonoFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp,
+                            letterSpacing = 0.5.sp,
                         )
                         Text(
                             "Inventario de utensilios y equipamiento",
-                            color = DespensaColors.inkSoft,
+                            color = MenajeColors.inkSoft,
                             fontFamily = InterFamily,
                             fontSize = 13.5.sp,
                             modifier = Modifier.padding(top = 5.dp),
@@ -140,15 +138,15 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                 Box(
                     Modifier
                         .size(40.dp)
-                        .background(DespensaColors.card, RoundedCornerShape(11.dp))
-                        .border(1.dp, DespensaColors.line, RoundedCornerShape(11.dp))
+                        .background(MenajeColors.card, RoundedCornerShape(11.dp))
+                        .border(1.dp, MenajeColors.line, RoundedCornerShape(11.dp))
                         .clickable { searchOpen = !searchOpen; if (!searchOpen) query = "" },
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         if (searchOpen) Icons.Filled.Close else SearchLineIcon,
                         contentDescription = "Buscar",
-                        tint = DespensaColors.inkSoft,
+                        tint = MenajeColors.inkSoft,
                         modifier = Modifier.size(18.dp),
                     )
                 }
@@ -161,15 +159,15 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                 ) {
                     Text(
                         "${active.ingredients.size}",
-                        color = DespensaColors.olive,
+                        color = MenajeColors.copper,
                         fontFamily = JetBrainsMonoFamily,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 24.sp,
                     )
                     Spacer(Modifier.width(7.dp))
                     Text(
-                        "ítems en esta página",
-                        color = DespensaColors.inkFaint,
+                        "ítems en este cajón",
+                        color = MenajeColors.inkFaint,
                         fontFamily = InterFamily,
                         fontSize = 11.5.sp,
                         letterSpacing = 0.3.sp,
@@ -177,15 +175,15 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                 }
             }
         }
-        Box(Modifier.fillMaxWidth().height(2.dp).background(DespensaColors.ink))
+        Box(Modifier.fillMaxWidth().height(2.dp).background(MenajeColors.ink))
 
         // ---- Buscador (tarjeta propia) ----
         if (searchOpen) {
             Spacer(Modifier.height(16.dp))
             Surface(
-                color = DespensaColors.card,
+                color = MenajeColors.card,
                 shape = RoundedCornerShape(14.dp),
-                border = BorderStroke(1.dp, DespensaColors.line),
+                border = BorderStroke(1.dp, MenajeColors.line),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(Modifier.padding(12.dp)) {
@@ -195,8 +193,8 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                         placeholder = "Buscar utensilio en todo el menaje…",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(DespensaColors.paper, RoundedCornerShape(10.dp))
-                            .border(1.dp, DespensaColors.line, RoundedCornerShape(10.dp))
+                            .background(MenajeColors.paper, RoundedCornerShape(10.dp))
+                            .border(1.dp, MenajeColors.line, RoundedCornerShape(10.dp))
                             .padding(horizontal = 12.dp, vertical = 9.dp),
                     )
                     val q = query.trim().lowercase()
@@ -204,7 +202,7 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                         p.ingredients.filter { it.name.lowercase().contains(q) }.map { it to p }
                     }
                     results.forEach { (ing, page) ->
-                        DottedDivider(Modifier.padding(top = 8.dp))
+                        RowDivider(Modifier.padding(top = 8.dp))
                         Row(
                             Modifier
                                 .fillMaxWidth()
@@ -213,22 +211,22 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Column(Modifier.weight(1f)) {
-                                Text(ing.name, color = DespensaColors.ink, fontFamily = InterFamily, fontWeight = FontWeight.Medium, fontSize = 15.sp)
-                                Text(page.name.uppercase(), color = DespensaColors.inkFaint, fontFamily = InterFamily, fontSize = 11.sp, letterSpacing = 0.7.sp)
+                                Text(ing.name, color = MenajeColors.ink, fontFamily = InterFamily, fontWeight = FontWeight.Medium, fontSize = 15.sp)
+                                Text(page.name.uppercase(), color = MenajeColors.inkFaint, fontFamily = InterFamily, fontSize = 11.sp, letterSpacing = 0.7.sp)
                             }
                             Text(
                                 "${fmt(ing.amount, ing.unit)} ${ing.unit}",
                                 fontFamily = JetBrainsMonoFamily,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 15.sp,
-                                color = DespensaColors.ink,
+                                color = MenajeColors.copper,
                             )
                         }
                     }
                     if (q.isNotEmpty() && results.isEmpty()) {
                         Text(
                             "Sin coincidencias.",
-                            color = DespensaColors.inkFaint,
+                            color = MenajeColors.inkFaint,
                             fontFamily = InterFamily,
                             fontSize = 13.5.sp,
                             modifier = Modifier.padding(top = 12.dp, start = 4.dp),
@@ -239,17 +237,17 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
         }
 
         if (active == null) {
-            // ---- Índice de repisas ----
+            // ---- Índice de cajones ----
             Surface(
-                color = Color(0xFFF5F1E6),
+                color = MenajeColors.steelSoft,
                 shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(2.dp, Color(0xFFC9C2AE)),
+                border = BorderStroke(2.dp, MenajeColors.line),
                 modifier = Modifier.fillMaxWidth().padding(top = 18.dp, bottom = 20.dp),
             ) {
                 Column(Modifier.padding(start = 14.dp, end = 14.dp, top = 16.dp, bottom = 8.dp)) {
                     state.mPages.chunked(3).forEachIndexed { row, shelf ->
                         Row(
-                            Modifier.fillMaxWidth(),
+                            Modifier.fillMaxWidth().padding(bottom = 12.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.Bottom,
                         ) {
@@ -264,31 +262,20 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                             // Relleno para que una fila incompleta no estire los tiles.
                             repeat(3 - shelf.size) { Spacer(Modifier.weight(1f)) }
                         }
-                        // Barra "de madera" que separa una repisa de la siguiente.
-                        Box(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = 0.dp, bottom = 16.dp)
-                                .height(9.dp)
-                                .background(
-                                    Brush.verticalGradient(listOf(Color(0xFFC9C2AE), Color(0xFFA29B89))),
-                                    RoundedCornerShape(2.dp),
-                                ),
-                        )
                     }
 
                     if (addingPage) {
                         Row(
                             Modifier
-                                .background(DespensaColors.card, RoundedCornerShape(999.dp))
-                                .border(1.dp, DespensaColors.olive, RoundedCornerShape(999.dp))
+                                .background(MenajeColors.card, RoundedCornerShape(999.dp))
+                                .border(1.dp, MenajeColors.steel, RoundedCornerShape(999.dp))
                                 .padding(start = 12.dp, end = 6.dp, top = 4.dp, bottom = 4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             PlainField(
                                 value = newPageName,
                                 onValueChange = { newPageName = it },
-                                placeholder = "Nombre de la repisa",
+                                placeholder = "Nombre del cajón",
                                 fontSize = 13.5.sp,
                                 modifier = Modifier.width(150.dp),
                             )
@@ -296,7 +283,7 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                             Box(
                                 Modifier
                                     .size(28.dp)
-                                    .background(DespensaColors.olive, RoundedCornerShape(8.dp))
+                                    .background(MenajeColors.copper, RoundedCornerShape(8.dp))
                                     .clickable {
                                         if (newPageName.isNotBlank()) vm.addMenajePage(newPageName.trim())
                                         newPageName = ""; addingPage = false
@@ -307,12 +294,12 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                     } else {
                         Box(
                             Modifier
-                                .background(DespensaColors.card, RoundedCornerShape(999.dp))
-                                .dashedBorder(DespensaColors.inkFaint, 999.dp)
+                                .background(MenajeColors.card, RoundedCornerShape(999.dp))
+                                .dashedBorder(MenajeColors.steel, 999.dp)
                                 .clickable { addingPage = true }
                                 .padding(horizontal = 14.dp, vertical = 8.dp),
                         ) {
-                            Text("+ Página", color = DespensaColors.olive, fontFamily = InterFamily, fontWeight = FontWeight.SemiBold, fontSize = 13.5.sp)
+                            Text("+ Cajón", color = MenajeColors.steel, fontFamily = InterFamily, fontWeight = FontWeight.SemiBold, fontSize = 13.5.sp)
                         }
                     }
                     Spacer(Modifier.height(10.dp))
@@ -320,25 +307,25 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
             }
             if (state.mPages.isEmpty()) {
                 Text(
-                    "Creá tu primera repisa.",
-                    color = DespensaColors.inkSoft,
+                    "Creá tu primer cajón.",
+                    color = MenajeColors.inkSoft,
                     fontFamily = InterFamily,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                 )
             }
         } else {
-            // ---- Repisa activa ----
+            // ---- Cajón activo ----
             LinkButton(
-                "← Repisas",
-                DespensaColors.inkSoft,
+                "← Cajones",
+                MenajeColors.inkSoft,
                 modifier = Modifier.padding(top = 18.dp, bottom = 12.dp),
                 onClick = { vm.setActiveMenajePage(null); iconMenuOpen = false },
             )
             Surface(
-                color = DespensaColors.card,
+                color = MenajeColors.card,
                 shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(1.dp, DespensaColors.line),
+                border = BorderStroke(1.dp, MenajeColors.line),
                 modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
             ) {
                 Column(Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
@@ -349,29 +336,30 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                         Icon(
                             pantryIconFor(active.iconId, activeIndex),
                             contentDescription = null,
-                            tint = DespensaColors.olive,
+                            tint = MenajeColors.steel,
                             modifier = Modifier.size(22.dp),
                         )
                         Spacer(Modifier.width(10.dp))
                         Text(
-                            active.name,
-                            fontFamily = FraunceFamily,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 23.sp,
-                            color = DespensaColors.ink,
+                            active.name.uppercase(),
+                            fontFamily = JetBrainsMonoFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            letterSpacing = 0.5.sp,
+                            color = MenajeColors.ink,
                             modifier = Modifier.weight(1f),
                         )
                         Box(
                             Modifier
                                 .size(28.dp)
-                                .background(if (iconMenuOpen) DespensaColors.oliveSoft else Color.Transparent, RoundedCornerShape(7.dp))
+                                .background(if (iconMenuOpen) MenajeColors.steelSoft else Color.Transparent, RoundedCornerShape(7.dp))
                                 .clickable { iconMenuOpen = !iconMenuOpen },
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 StarIcon,
                                 contentDescription = "Cambiar icono",
-                                tint = if (iconMenuOpen) DespensaColors.olive else DespensaColors.inkFaint,
+                                tint = if (iconMenuOpen) MenajeColors.steel else MenajeColors.inkFaint,
                                 modifier = Modifier.size(16.dp),
                             )
                         }
@@ -379,10 +367,10 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                             Modifier.size(28.dp).clickable { vm.deleteMenajePage(active.id) },
                             contentAlignment = Alignment.Center,
                         ) {
-                            Icon(Icons.Filled.Close, contentDescription = "Eliminar página", tint = DespensaColors.inkFaint, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Filled.Close, contentDescription = "Eliminar cajón", tint = MenajeColors.inkFaint, modifier = Modifier.size(16.dp))
                         }
                     }
-                    Box(Modifier.fillMaxWidth().height(1.dp).background(DespensaColors.line))
+                    Box(Modifier.fillMaxWidth().height(1.dp).background(MenajeColors.line))
 
                     if (iconMenuOpen) {
                         IconPicker(
@@ -394,15 +382,15 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
 
                     if (active.ingredients.isEmpty()) {
                         Text(
-                            "Esta página está vacía. Agrega tu primer utensilio abajo.",
-                            color = DespensaColors.inkFaint,
+                            "Este cajón está vacío. Agrega tu primer utensilio abajo.",
+                            color = MenajeColors.inkFaint,
                             fontFamily = InterFamily,
                             fontSize = 13.5.sp,
                             modifier = Modifier.padding(vertical = 12.dp),
                         )
                     }
                     active.ingredients.forEach { ing ->
-                        DottedDivider()
+                        RowDivider()
                         ItemRow(
                             ing = ing,
                             onDec = { vm.adjustMenajeItem(active.id, ing.id, -1) },
@@ -411,7 +399,7 @@ fun MenajeScreen(state: AppState, vm: AppViewModel, onBack: () -> Unit) {
                         )
                     }
 
-                    Box(Modifier.fillMaxWidth().padding(top = 16.dp).height(2.dp).background(DespensaColors.ink))
+                    Box(Modifier.fillMaxWidth().padding(top = 16.dp).height(2.dp).background(MenajeColors.ink))
                     AddItemForm(pageId = active.id, vm = vm)
                     Spacer(Modifier.height(12.dp))
                 }
@@ -435,27 +423,13 @@ private fun LinkButton(text: String, color: Color, modifier: Modifier = Modifier
     )
 }
 
-/** Compose no trae divisor punteado; este dibuja el `1px dotted` del diseño. */
+/** Separador liso de 1dp: en Menaje la lectura es "cajón de herramientas", no ficha de papel. */
 @Composable
-private fun DottedDivider(modifier: Modifier = Modifier, color: Color = DespensaColors.line, thickness: Float = 2f) {
-    Box(
-        modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .drawBehind {
-                drawLine(
-                    color = color,
-                    start = androidx.compose.ui.geometry.Offset(0f, size.height / 2),
-                    end = androidx.compose.ui.geometry.Offset(size.width, size.height / 2),
-                    strokeWidth = thickness,
-                    cap = StrokeCap.Round,
-                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(1f, 5f)),
-                )
-            },
-    )
+private fun RowDivider(modifier: Modifier = Modifier, color: Color = MenajeColors.line) {
+    Box(modifier.fillMaxWidth().height(1.dp).background(color))
 }
 
-/** Borde punteado (la pastilla "+ Página" y demás). */
+/** Borde punteado (la pastilla "+ Cajón" y demás). */
 private fun Modifier.dashedBorder(color: Color, radius: androidx.compose.ui.unit.Dp) = this.drawBehind {
     val r = radius.toPx().coerceAtMost(size.minDimension / 2)
     drawRoundRect(
@@ -483,45 +457,48 @@ private fun PlainField(
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
-            textStyle = TextStyle(color = DespensaColors.ink, fontSize = fontSize, fontFamily = fontFamily),
-            cursorBrush = SolidColor(DespensaColors.olive),
+            textStyle = TextStyle(color = MenajeColors.ink, fontSize = fontSize, fontFamily = fontFamily),
+            cursorBrush = SolidColor(MenajeColors.steel),
             keyboardOptions = keyboardOptions,
             modifier = Modifier.fillMaxWidth(),
         )
         if (value.isEmpty()) {
-            Text(placeholder, color = DespensaColors.inkFaint, fontSize = fontSize, fontFamily = fontFamily)
+            Text(placeholder, color = MenajeColors.inkFaint, fontSize = fontSize, fontFamily = fontFamily)
         }
     }
 }
 
 @Composable
 private fun ShelfTile(page: PantryPage, index: Int, modifier: Modifier, onClick: () -> Unit) {
+    val shape = RoundedCornerShape(9.dp)
     Column(
         modifier
-            .heightIn(min = 82.dp)
-            .background(DespensaColors.card, RoundedCornerShape(topStart = 11.dp, topEnd = 11.dp, bottomStart = 4.dp, bottomEnd = 4.dp))
-            .border(1.dp, DespensaColors.line, RoundedCornerShape(topStart = 11.dp, topEnd = 11.dp, bottomStart = 4.dp, bottomEnd = 4.dp))
+            .heightIn(min = 92.dp)
+            .background(MenajeColors.card, shape)
+            .border(1.dp, MenajeColors.line, shape)
             .clickable(onClick = onClick)
             .padding(horizontal = 6.dp, vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.Bottom),
     ) {
-        Icon(pantryIconFor(page.iconId, index), contentDescription = null, tint = DespensaColors.olive, modifier = Modifier.size(24.dp))
+        // "Manija" del cajón: barrita de cobre centrada arriba del icono.
+        Box(Modifier.width(28.dp).height(4.dp).background(MenajeColors.copper, RoundedCornerShape(2.dp)))
+        Icon(pantryIconFor(page.iconId, index), contentDescription = null, tint = MenajeColors.steel, modifier = Modifier.size(24.dp))
         Text(
             page.name,
-            color = DespensaColors.inkSoft,
+            color = MenajeColors.inkSoft,
             fontFamily = InterFamily,
             fontWeight = FontWeight.SemiBold,
             fontSize = 12.sp,
             lineHeight = 14.sp,
             textAlign = TextAlign.Center,
         )
-        Surface(color = DespensaColors.oliveSoft, shape = RoundedCornerShape(999.dp)) {
+        Surface(color = MenajeColors.copperSoft, shape = RoundedCornerShape(999.dp)) {
             Text(
                 "${page.ingredients.size}",
                 fontFamily = JetBrainsMonoFamily,
                 fontSize = 11.sp,
-                color = DespensaColors.olive,
+                color = MenajeColors.copper,
                 modifier = Modifier.padding(horizontal = 7.dp, vertical = 1.dp),
             )
         }
@@ -532,15 +509,15 @@ private fun ShelfTile(page: PantryPage, index: Int, modifier: Modifier, onClick:
 private fun IconPicker(selectedId: String?, fallbackIndex: Int, onPick: (String) -> Unit) {
     val effective = selectedId ?: PantryIconOptions[fallbackIndex.coerceAtLeast(0) % PantryIconOptions.size].id
     Surface(
-        color = DespensaColors.paper,
+        color = MenajeColors.paper,
         shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(1.dp, DespensaColors.line),
+        border = BorderStroke(1.dp, MenajeColors.line),
         modifier = Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 4.dp),
     ) {
         Column(Modifier.padding(12.dp)) {
             Text(
-                "ICONO DE LA REPISA",
-                color = DespensaColors.inkFaint,
+                "ICONO DEL CAJÓN",
+                color = MenajeColors.inkFaint,
                 fontFamily = InterFamily,
                 fontSize = 10.5.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -555,15 +532,15 @@ private fun IconPicker(selectedId: String?, fallbackIndex: Int, onPick: (String)
                             Modifier
                                 .weight(1f)
                                 .height(34.dp)
-                                .background(if (on) DespensaColors.olive else DespensaColors.card, RoundedCornerShape(9.dp))
-                                .border(1.dp, if (on) DespensaColors.olive else DespensaColors.line, RoundedCornerShape(9.dp))
+                                .background(if (on) MenajeColors.steel else MenajeColors.card, RoundedCornerShape(9.dp))
+                                .border(1.dp, if (on) MenajeColors.steel else MenajeColors.line, RoundedCornerShape(9.dp))
                                 .clickable { onPick(opt.id) },
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 opt.icon,
                                 contentDescription = opt.id,
-                                tint = if (on) DespensaColors.paper else DespensaColors.olive,
+                                tint = if (on) MenajeColors.paper else MenajeColors.steel,
                                 modifier = Modifier.size(20.dp),
                             )
                         }
@@ -586,12 +563,12 @@ private fun ItemRow(
         Row(verticalAlignment = Alignment.Top) {
             val peso = ing.type == "peso"
             Surface(
-                color = if (peso) DespensaColors.oliveSoft else DespensaColors.amberSoft,
+                color = if (peso) MenajeColors.steelSoft else MenajeColors.copperSoft,
                 shape = RoundedCornerShape(5.dp),
             ) {
                 Text(
                     if (peso) "PESO" else "UNIDAD",
-                    color = if (peso) DespensaColors.olive else DespensaColors.amber,
+                    color = if (peso) MenajeColors.steel else MenajeColors.copper,
                     fontFamily = InterFamily,
                     fontSize = 9.5.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -600,7 +577,7 @@ private fun ItemRow(
                 )
             }
             Spacer(Modifier.width(9.dp))
-            Text(ing.name, color = DespensaColors.ink, fontFamily = InterFamily, fontWeight = FontWeight.Medium, fontSize = 15.5.sp, modifier = Modifier.weight(1f))
+            Text(ing.name, color = MenajeColors.ink, fontFamily = InterFamily, fontWeight = FontWeight.Medium, fontSize = 15.5.sp, modifier = Modifier.weight(1f))
         }
         Row(Modifier.fillMaxWidth().padding(top = 9.dp), verticalAlignment = Alignment.CenterVertically) {
             StepButton(Icons.Filled.Remove, "Restar", onDec)
@@ -609,15 +586,14 @@ private fun ItemRow(
                 fontFamily = JetBrainsMonoFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
-                color = DespensaColors.ink,
+                color = MenajeColors.copper,
                 textAlign = TextAlign.End,
                 modifier = Modifier.padding(horizontal = 6.dp).width(64.dp),
             )
             StepButton(Icons.Filled.Add, "Sumar", onInc)
-            // El "hueco punteado" que el diseño usa como flex-spacer.
-            DottedDivider(Modifier.weight(1f).padding(horizontal = 11.dp), color = Color(0xFFCDC7B5))
+            Spacer(Modifier.weight(1f))
             Box(Modifier.size(28.dp).clickable(onClick = onRemove), contentAlignment = Alignment.Center) {
-                Icon(Icons.Filled.Close, contentDescription = "Eliminar", tint = DespensaColors.inkFaint, modifier = Modifier.size(16.dp))
+                Icon(Icons.Filled.Close, contentDescription = "Eliminar", tint = MenajeColors.inkFaint, modifier = Modifier.size(16.dp))
             }
         }
     }
@@ -628,12 +604,12 @@ private fun StepButton(icon: ImageVector, label: String, onClick: () -> Unit) {
     Box(
         Modifier
             .size(24.dp)
-            .background(DespensaColors.paper, RoundedCornerShape(7.dp))
-            .border(1.dp, DespensaColors.line, RoundedCornerShape(7.dp))
+            .background(MenajeColors.paper, RoundedCornerShape(7.dp))
+            .border(1.dp, MenajeColors.line, RoundedCornerShape(7.dp))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(icon, contentDescription = label, tint = DespensaColors.inkSoft, modifier = Modifier.size(14.dp))
+        Icon(icon, contentDescription = label, tint = MenajeColors.inkSoft, modifier = Modifier.size(14.dp))
     }
 }
 
@@ -653,8 +629,8 @@ private fun AddItemForm(pageId: String, vm: AppViewModel) {
             placeholder = "Nombre del utensilio",
             modifier = Modifier
                 .fillMaxWidth()
-                .background(DespensaColors.paper, RoundedCornerShape(9.dp))
-                .border(1.dp, DespensaColors.line, RoundedCornerShape(9.dp))
+                .background(MenajeColors.paper, RoundedCornerShape(9.dp))
+                .border(1.dp, MenajeColors.line, RoundedCornerShape(9.dp))
                 .padding(horizontal = 12.dp, vertical = 10.dp),
         )
         Row(
@@ -670,8 +646,8 @@ private fun AddItemForm(pageId: String, vm: AppViewModel) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier
                     .width(88.dp)
-                    .background(DespensaColors.paper, RoundedCornerShape(9.dp))
-                    .border(1.dp, DespensaColors.line, RoundedCornerShape(9.dp))
+                    .background(MenajeColors.paper, RoundedCornerShape(9.dp))
+                    .border(1.dp, MenajeColors.line, RoundedCornerShape(9.dp))
                     .padding(horizontal = 11.dp, vertical = 10.dp),
             )
             // La unidad ya distingue peso de unidad ("u"), igual que el `<select>` del diseño.
@@ -679,18 +655,18 @@ private fun AddItemForm(pageId: String, vm: AppViewModel) {
                 Row(
                     Modifier
                         .menuAnchor(androidx.compose.material3.MenuAnchorType.PrimaryNotEditable)
-                        .background(DespensaColors.card, RoundedCornerShape(9.dp))
-                        .border(1.dp, DespensaColors.line, RoundedCornerShape(9.dp))
+                        .background(MenajeColors.card, RoundedCornerShape(9.dp))
+                        .border(1.dp, MenajeColors.line, RoundedCornerShape(9.dp))
                         .padding(start = 12.dp, end = 6.dp, top = 10.dp, bottom = 10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(unit, color = DespensaColors.ink, fontFamily = InterFamily, fontSize = 13.5.sp)
-                    Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "Unidad", tint = DespensaColors.inkSoft, modifier = Modifier.size(18.dp))
+                    Text(unit, color = MenajeColors.ink, fontFamily = InterFamily, fontSize = 13.5.sp)
+                    Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "Unidad", tint = MenajeColors.inkSoft, modifier = Modifier.size(18.dp))
                 }
                 ExposedDropdownMenu(expanded = unitOpen, onDismissRequest = { unitOpen = false }) {
                     UNITS.forEach { u ->
                         DropdownMenuItem(
-                            text = { Text(u, fontFamily = InterFamily, color = DespensaColors.ink) },
+                            text = { Text(u, fontFamily = InterFamily, color = MenajeColors.ink) },
                             onClick = { unit = u; unitOpen = false },
                         )
                     }
@@ -699,7 +675,7 @@ private fun AddItemForm(pageId: String, vm: AppViewModel) {
             Spacer(Modifier.weight(1f))
             Box(
                 Modifier
-                    .background(DespensaColors.olive, RoundedCornerShape(9.dp))
+                    .background(MenajeColors.steel, RoundedCornerShape(9.dp))
                     .clickable {
                         val amt = (amount.replace(',', '.').toDoubleOrNull() ?: 0.0).coerceAtLeast(0.0)
                         if (name.isNotBlank()) {

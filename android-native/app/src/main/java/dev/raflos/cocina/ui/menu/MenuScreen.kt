@@ -34,7 +34,7 @@ import dev.raflos.cocina.ui.theme.BookIcon
 import dev.raflos.cocina.ui.theme.CartIcon
 import dev.raflos.cocina.ui.theme.MenuColors
 import dev.raflos.cocina.ui.theme.PantryShelfIcon
-import dev.raflos.cocina.ui.theme.UtensilsIcon
+import dev.raflos.cocina.ui.theme.TomatoIcon
 
 enum class MenuDestination { DESPENSA, MENAJE, RECETAS, COMPRA }
 
@@ -44,8 +44,8 @@ private const val TILE_WIDTH_FRACTION = 0.6f
 private data class MenuItem(val destination: MenuDestination, val label: String, val icon: ImageVector)
 
 private val ITEMS = listOf(
-    MenuItem(MenuDestination.DESPENSA, "Despensa", PantryShelfIcon),
-    MenuItem(MenuDestination.MENAJE, "Menaje", UtensilsIcon),
+    MenuItem(MenuDestination.DESPENSA, "Despensa", TomatoIcon),
+    MenuItem(MenuDestination.MENAJE, "Menaje", PantryShelfIcon),
     MenuItem(MenuDestination.RECETAS, "Recetas", BookIcon),
     MenuItem(MenuDestination.COMPRA, "Compras", CartIcon),
 )

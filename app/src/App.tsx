@@ -28,12 +28,15 @@ function PotIcon() {
   );
 }
 
-function UtensilsIcon() {
+function TomatoIcon() {
   return (
     <svg viewBox="0 0 52 52" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 42 L34 14" />
-      <path d="M34 42 L24 26" />
-      <path d="M16 12 v9 a4 4 0 0 0 8 0 v-9" />
+      <path d="M10 30 a16 16 0 1 0 32 0 a16 16 0 1 0 -32 0 Z" />
+      <path d="M26 15 v-6" />
+      <path d="M26 15 l-7 -3" />
+      <path d="M26 15 l7 -3" />
+      <path d="M26 15 l-4 -6" />
+      <path d="M26 15 l4 -6" />
     </svg>
   );
 }
@@ -69,8 +72,8 @@ function GearIcon() {
 }
 
 const NAV = [
-  { key: "despensa", label: "Despensa", Icon: PotIcon },
-  { key: "menaje", label: "Menaje", Icon: UtensilsIcon },
+  { key: "despensa", label: "Despensa", Icon: TomatoIcon },
+  { key: "menaje", label: "Menaje", Icon: PotIcon },
   { key: "recetas", label: "Recetas", Icon: BookIcon },
   { key: "compra", label: "Compras", Icon: CartIcon },
 ] as const;

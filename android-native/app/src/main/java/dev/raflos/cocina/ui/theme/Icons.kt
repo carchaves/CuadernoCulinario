@@ -79,6 +79,17 @@ val CartIcon: ImageVector = lineIcon(
     "M37 35.4 a2.6 2.6 0 1 0 0 5.2 a2.6 2.6 0 1 0 0 -5.2 Z",
 )
 
+/** Tomate (Despensa). */
+val TomatoIcon: ImageVector = lineIcon(
+    "Tomato", 52f, 2f,
+    "M10 30 a16 16 0 1 0 32 0 a16 16 0 1 0 -32 0 Z",
+    "M26 15 v-6",
+    "M26 15 l-7 -3",
+    "M26 15 l7 -3",
+    "M26 15 l-4 -6",
+    "M26 15 l4 -6",
+)
+
 /** Tenedor y cuchillo (Menaje). */
 val UtensilsIcon: ImageVector = lineIcon(
     "Utensils", 52f, 2f,

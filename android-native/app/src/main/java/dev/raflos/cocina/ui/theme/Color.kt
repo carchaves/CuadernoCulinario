@@ -25,6 +25,21 @@ object DespensaColors {
     val danger = Color(0xFFA6432E)
 }
 
+/** Menaje: paleta "taller / metal", fría y con acento cobre para la acción y las cantidades. */
+object MenajeColors {
+    val paper = Color(0xFFEEF1F3)
+    val card = Color(0xFFFAFBFC)
+    val ink = Color(0xFF23282E)
+    val inkSoft = Color(0xFF667079)
+    val inkFaint = Color(0xFF9CA6AD)
+    val steel = Color(0xFF3E5C6E)
+    val steelSoft = Color(0xFFDCE6EA)
+    val copper = Color(0xFFB5651D)
+    val copperSoft = Color(0xFFF2E1D2)
+    val line = Color(0xFFD7DDE1)
+    val danger = Color(0xFFA6432E)
+}
+
 object ListaColors {
     val paper = Color(0xFFF4F5EF)
     val card = Color(0xFFFBFCF8)
