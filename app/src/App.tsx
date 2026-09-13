@@ -30,13 +30,16 @@ function PotIcon() {
 
 function TomatoIcon() {
   return (
-    <svg viewBox="0 0 52 52" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M10 30 a16 16 0 1 0 32 0 a16 16 0 1 0 -32 0 Z" />
-      <path d="M26 15 v-6" />
-      <path d="M26 15 l-7 -3" />
-      <path d="M26 15 l7 -3" />
-      <path d="M26 15 l-4 -6" />
-      <path d="M26 15 l4 -6" />
+    <svg viewBox="0 0 52 52" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 32 a15 15 0 1 0 30 0 a15 15 0 1 0 -30 0 Z" />
+      <path d="M31 17 Q26 11 20 14 Q24 18 31 17 Z" />
+      <path d="M31 17 Q23 11 24 7 Q30 13 31 17 Z" />
+      <path d="M31 17 Q27 10 31 4 Q35 11 31 17 Z" />
+      <path d="M31 17 Q37 10 39 8 Q34 15 31 17 Z" />
+      <path d="M31 17 Q40 11 44 15 Q38 20 31 17 Z" />
+      <path d="M31 4 l1 -3" />
+      <path d="M16 23 q4 -5 9 -6" />
+      <path d="M16 28 q3 -3 6 -4" />
     </svg>
   );
 }
