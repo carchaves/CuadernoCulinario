@@ -1,1 +1,145 @@
-{"pages":[{"id":"49269237-d9aa-4d74-8052-d5198670a503","name":"Ollas","ingredients":[],"iconId":null}],"activePageId":"49269237-d9aa-4d74-8052-d5198670a503"}
+{
+ "pages": [
+  {
+   "id": "49269237-d9aa-4d74-8052-d5198670a503",
+   "name": "Ollas",
+   "ingredients": [
+    {
+     "id": "4acf8748e9ba",
+     "name": "Olla para pastas (grande)",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "e2449957653d",
+     "name": "Olla para salsas (chica/mediana)",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "4a768815130a",
+     "name": "Ollas de distintos tamaños",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    }
+   ],
+   "iconId": null
+  },
+  {
+   "id": "904e82fb8752-menaje",
+   "name": "Sartenes",
+   "ingredients": [
+    {
+     "id": "0015c6b1ce9a",
+     "name": "Sartenes (varias)",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    }
+   ],
+   "iconId": null
+  },
+  {
+   "id": "b35d8909c32a-menaje",
+   "name": "Cuchillos",
+   "ingredients": [
+    {
+     "id": "8afcd4c585eb",
+     "name": "Cuchillo común",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "f7bea39299f1",
+     "name": "Cuchillo serrado (serrucho)",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "16a24b9780eb",
+     "name": "Cuchillo carnicero",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    }
+   ],
+   "iconId": null
+  },
+  {
+   "id": "174fff59fb22-menaje",
+   "name": "Electrodomésticos",
+   "ingredients": [
+    {
+     "id": "65b1cd32d20a",
+     "name": "Cocina con horno",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "062e7f62de70",
+     "name": "Horno eléctrico",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "c79bbfe91c34",
+     "name": "Olla eléctrica",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "2b0462b05bd8",
+     "name": "Máquina de pan",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "dc4d4ee42dfc",
+     "name": "Batidora de pie (standing mixer) para repostería",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "8197b5e98cf5",
+     "name": "Minipimer",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "b1e2fed250f0",
+     "name": "Cortadora",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    }
+   ],
+   "iconId": null
+  },
+  {
+   "id": "db332dd381d6-menaje",
+   "name": "Refrigeración",
+   "ingredients": [
+    {
+     "id": "a97372777a89",
+     "name": "Heladera con freezer y refrigerador",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    }
+   ],
+   "iconId": null
+  }
+ ],
+ "activePageId": "49269237-d9aa-4d74-8052-d5198670a503"
+}
