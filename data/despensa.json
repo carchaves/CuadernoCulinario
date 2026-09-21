@@ -1235,7 +1235,22 @@
   {
    "id": "rcsco7htd3md3",
    "name": "Heladera / para recalentar",
-   "ingredients": []
+   "ingredients": [
+    {
+     "id": "leftover_pollo_arroz_1789954472",
+     "name": "Taper de pollo con arroz (sobra)",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    },
+    {
+     "id": "leftover_frijoles_rojos_1789954472",
+     "name": "Taper chico de frijoles rojos (sobra, ~1 porción)",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    }
+   ]
   }
  ],
  "activePageId": "msq6w19c0q902"
