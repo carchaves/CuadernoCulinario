@@ -519,7 +519,7 @@
      "id": "msq3qzsipeqoe",
      "name": "Bondiola de cerdo (congelada)",
      "type": "peso",
-     "amount": 2640.0,
+     "amount": 0.0,
      "unit": "g"
     },
     {
@@ -1235,7 +1235,15 @@
   {
    "id": "rcsco7htd3md3",
    "name": "Heladera / para recalentar",
-   "ingredients": []
+   "ingredients": [
+    {
+     "id": "leftover_bondiola_1790128026",
+     "name": "Bondiola cocida (sobra, varias porciones ~4-5)",
+     "type": "unidad",
+     "amount": 1.0,
+     "unit": "u"
+    }
+   ]
   }
  ],
  "activePageId": "msq6w19c0q902"
