@@ -330,7 +330,7 @@
           "id": "msq6xg14gmb49",
           "name": "Plátano maduro",
           "type": "unidad",
-          "amount": 6.0,
+          "amount": 26.0,
           "unit": "u"
         },
         {
@@ -563,6 +563,27 @@
           "type": "unidad",
           "amount": 5.0,
           "unit": "u"
+        },
+        {
+          "id": "3a781ebf37584",
+          "name": "Paleta (res)",
+          "type": "peso",
+          "amount": 1805,
+          "unit": "g"
+        },
+        {
+          "id": "9bff42a287574",
+          "name": "Bola de lomo (res)",
+          "type": "peso",
+          "amount": 885,
+          "unit": "g"
+        },
+        {
+          "id": "e7362ccca6534",
+          "name": "Pechuga especial novillito",
+          "type": "peso",
+          "amount": 685,
+          "unit": "g"
         }
       ],
       "iconId": null
@@ -652,7 +673,7 @@
           "id": "msq8hfy5b0wj1",
           "name": "Leche parcialmente descremada",
           "type": "peso",
-          "amount": 11.2,
+          "amount": 16.2,
           "unit": "L"
         }
       ],
@@ -808,6 +829,13 @@
           "type": "unidad",
           "amount": 3.0,
           "unit": "u"
+        },
+        {
+          "id": "a49769116a134",
+          "name": "Laurel triturado",
+          "type": "peso",
+          "amount": 25,
+          "unit": "g"
         }
       ],
       "iconId": null
@@ -1018,6 +1046,13 @@
           "type": "peso",
           "amount": 6240.0,
           "unit": "g"
+        },
+        {
+          "id": "750f284d308c4",
+          "name": "Jugo de naranja",
+          "type": "unidad",
+          "amount": 2,
+          "unit": "u"
         }
       ],
       "iconId": null
