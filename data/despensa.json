@@ -50,7 +50,7 @@
           "id": "msq6v8s7tih2i",
           "name": "Arroz blanco",
           "type": "peso",
-          "amount": 6000.0,
+          "amount": 5950.0,
           "unit": "g"
         },
         {
@@ -239,7 +239,7 @@
           "id": "msq6wqndkczsu",
           "name": "Pimiento verde",
           "type": "unidad",
-          "amount": 1.0,
+          "amount": 0.5,
           "unit": "u"
         },
         {
