@@ -1271,6 +1271,47 @@
       "id": "rcsco7htd3md3",
       "name": "Heladera / para recalentar",
       "ingredients": []
+    },
+    {
+      "id": "2ee68d16223a4",
+      "name": "Snacks",
+      "ingredients": [
+        {
+          "id": "2a2e0680deb94",
+          "name": "Galletitas Isabela",
+          "type": "unidad",
+          "amount": 2,
+          "unit": "u"
+        },
+        {
+          "id": "95d44bc0c7fe4",
+          "name": "Galletitas anillos Terrabusi",
+          "type": "unidad",
+          "amount": 1,
+          "unit": "u"
+        },
+        {
+          "id": "09202942e0804",
+          "name": "Galletas de avena Cachafaz (chip chocolate)",
+          "type": "unidad",
+          "amount": 1,
+          "unit": "u"
+        },
+        {
+          "id": "5849b1425c3a4",
+          "name": "Budín vainilla/limón",
+          "type": "unidad",
+          "amount": 2,
+          "unit": "u"
+        },
+        {
+          "id": "bd57729819154",
+          "name": "Turrón de maní",
+          "type": "unidad",
+          "amount": 2,
+          "unit": "u"
+        }
+      ]
     }
   ],
   "activePageId": "msq6w19c0q902"
