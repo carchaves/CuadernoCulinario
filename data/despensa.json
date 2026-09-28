@@ -43,7 +43,7 @@
           "id": "msq6v8l44sqm0",
           "name": "Avena en hojuelas",
           "type": "peso",
-          "amount": 1630.0,
+          "amount": 1580.0,
           "unit": "g"
         },
         {
@@ -673,7 +673,7 @@
           "id": "msq8hfy5b0wj1",
           "name": "Leche parcialmente descremada",
           "type": "peso",
-          "amount": 15.9,
+          "amount": 15.65,
           "unit": "L"
         }
       ],
@@ -1163,7 +1163,7 @@
           "id": "msq876gszvznm",
           "name": "Cacao Toddy",
           "type": "peso",
-          "amount": 1060.0,
+          "amount": 1040.0,
           "unit": "g"
         },
         {
