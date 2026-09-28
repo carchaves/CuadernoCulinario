@@ -50,7 +50,7 @@
           "id": "msq6v8s7tih2i",
           "name": "Arroz blanco",
           "type": "peso",
-          "amount": 5900.0,
+          "amount": 5860.0,
           "unit": "g"
         },
         {
@@ -1212,7 +1212,7 @@
           "id": "msqjy2nq2672c",
           "name": "Papas prefritas congeladas",
           "type": "peso",
-          "amount": 2000.0,
+          "amount": 1850.0,
           "unit": "g"
         },
         {
