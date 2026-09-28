@@ -50,7 +50,7 @@
           "id": "msq6v8s7tih2i",
           "name": "Arroz blanco",
           "type": "peso",
-          "amount": 5950.0,
+          "amount": 5900.0,
           "unit": "g"
         },
         {
@@ -85,7 +85,7 @@
           "id": "msq6v9xsuh8nu",
           "name": "Azúcar blanca",
           "type": "peso",
-          "amount": 4000.0,
+          "amount": 3990.0,
           "unit": "g"
         },
         {
@@ -183,7 +183,7 @@
           "id": "msqzi0103b35t",
           "name": "Café molido",
           "type": "peso",
-          "amount": 4000.0,
+          "amount": 3990.0,
           "unit": "g"
         },
         {
@@ -239,7 +239,7 @@
           "id": "msq6wqndkczsu",
           "name": "Pimiento verde",
           "type": "unidad",
-          "amount": 0.5,
+          "amount": 0.0,
           "unit": "u"
         },
         {
@@ -652,7 +652,7 @@
           "id": "msq8hfy5b0wj1",
           "name": "Leche parcialmente descremada",
           "type": "peso",
-          "amount": 12.0,
+          "amount": 11.65,
           "unit": "L"
         }
       ],
@@ -1128,7 +1128,7 @@
           "id": "msq876gszvznm",
           "name": "Cacao Toddy",
           "type": "peso",
-          "amount": 1080.0,
+          "amount": 1060.0,
           "unit": "g"
         },
         {
