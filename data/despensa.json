@@ -43,14 +43,14 @@
           "id": "msq6v8l44sqm0",
           "name": "Avena en hojuelas",
           "type": "peso",
-          "amount": 1580.0,
+          "amount": 1530.0,
           "unit": "g"
         },
         {
           "id": "msq6v8s7tih2i",
           "name": "Arroz blanco",
           "type": "peso",
-          "amount": 5860.0,
+          "amount": 5820.0,
           "unit": "g"
         },
         {
@@ -85,7 +85,7 @@
           "id": "msq6v9xsuh8nu",
           "name": "Azúcar blanca",
           "type": "peso",
-          "amount": 3985.0,
+          "amount": 3975.0,
           "unit": "g"
         },
         {
@@ -106,7 +106,7 @@
           "id": "msq6vapi3ha9u",
           "name": "Leche en polvo",
           "type": "peso",
-          "amount": 2525.0,
+          "amount": 2495.0,
           "unit": "g"
         },
         {
@@ -183,7 +183,7 @@
           "id": "msqzi0103b35t",
           "name": "Café molido",
           "type": "peso",
-          "amount": 3975.0,
+          "amount": 3965.0,
           "unit": "g"
         },
         {
@@ -330,7 +330,7 @@
           "id": "msq6xg14gmb49",
           "name": "Plátano maduro",
           "type": "unidad",
-          "amount": 25.0,
+          "amount": 23.0,
           "unit": "u"
         },
         {
@@ -505,7 +505,7 @@
           "id": "msq6z2ox65wff",
           "name": "Huevos",
           "type": "unidad",
-          "amount": 58.0,
+          "amount": 56.0,
           "unit": "u"
         },
         {
@@ -568,7 +568,7 @@
           "id": "3a781ebf37584",
           "name": "Paleta (res)",
           "type": "peso",
-          "amount": 1805,
+          "amount": 1605,
           "unit": "g"
         },
         {
@@ -673,7 +673,7 @@
           "id": "msq8hfy5b0wj1",
           "name": "Leche parcialmente descremada",
           "type": "peso",
-          "amount": 15.65,
+          "amount": 15.0,
           "unit": "L"
         }
       ],
