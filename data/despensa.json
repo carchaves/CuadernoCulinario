@@ -85,7 +85,7 @@
           "id": "msq6v9xsuh8nu",
           "name": "Azúcar blanca",
           "type": "peso",
-          "amount": 3975.0,
+          "amount": 3970.0,
           "unit": "g"
         },
         {
@@ -183,7 +183,7 @@
           "id": "msqzi0103b35t",
           "name": "Café molido",
           "type": "peso",
-          "amount": 3965.0,
+          "amount": 3955.0,
           "unit": "g"
         },
         {
@@ -673,7 +673,7 @@
           "id": "msq8hfy5b0wj1",
           "name": "Leche parcialmente descremada",
           "type": "peso",
-          "amount": 14.75,
+          "amount": 14.55,
           "unit": "L"
         }
       ],
