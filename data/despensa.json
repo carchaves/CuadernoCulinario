@@ -162,7 +162,7 @@
           "id": "msqf8wxr4dq7r",
           "name": "Espaguetis",
           "type": "peso",
-          "amount": 3000.0,
+          "amount": 2880.0,
           "unit": "g"
         },
         {
@@ -1044,7 +1044,7 @@
           "id": "msqy30rntfn95",
           "name": "Puré de tomate",
           "type": "peso",
-          "amount": 6240.0,
+          "amount": 6090.0,
           "unit": "g"
         },
         {
