@@ -42,10 +42,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Deep link cocina://compra -> arrancar en la lista de compras.
+        val startOnCompra = intent?.data?.host == "compra"
         setContent {
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    CocinaRoot()
+                    CocinaRoot(startOnCompra = startOnCompra)
                 }
             }
         }
@@ -53,7 +55,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun CocinaRoot() {
+private fun CocinaRoot(startOnCompra: Boolean = false) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val githubTokenStore = remember { GithubTokenStore(context) }
     var hasToken by remember { mutableStateOf(githubTokenStore.hasToken()) }
@@ -82,7 +84,7 @@ private fun CocinaRoot() {
     }
 
     val state by vm.state.collectAsState()
-    var screen by remember { mutableStateOf(Screen.MENU) }
+    var screen by remember { mutableStateOf(if (startOnCompra) Screen.COMPRA else Screen.MENU) }
 
     val currentState = state
     if (currentState == null) {
