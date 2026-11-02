@@ -43,7 +43,7 @@
           "id": "msq6v8l44sqm0",
           "name": "Avena en hojuelas",
           "type": "peso",
-          "amount": 1430.0,
+          "amount": 1390.0,
           "unit": "g"
         },
         {
@@ -106,7 +106,7 @@
           "id": "msq6vapi3ha9u",
           "name": "Leche en polvo",
           "type": "peso",
-          "amount": 2495.0,
+          "amount": 2470.0,
           "unit": "g"
         },
         {
@@ -673,7 +673,7 @@
           "id": "msq8hfy5b0wj1",
           "name": "Leche parcialmente descremada",
           "type": "peso",
-          "amount": 14.45,
+          "amount": 14.2,
           "unit": "L"
         }
       ],
@@ -1114,7 +1114,7 @@
           "id": "msq74of0eqsko",
           "name": "Mantequilla de maní",
           "type": "peso",
-          "amount": 469.0,
+          "amount": 439.0,
           "unit": "g"
         },
         {
@@ -1135,7 +1135,7 @@
           "id": "msq74y307hw0k",
           "name": "Semillas de girasol",
           "type": "peso",
-          "amount": 150.0,
+          "amount": 142.0,
           "unit": "g"
         },
         {
@@ -1198,7 +1198,7 @@
           "id": "msqaajpsugwrb",
           "name": "Semillas de lino",
           "type": "peso",
-          "amount": 150.0,
+          "amount": 143.0,
           "unit": "g"
         }
       ],
