@@ -50,7 +50,7 @@
           "id": "msq6v8s7tih2i",
           "name": "Arroz blanco",
           "type": "peso",
-          "amount": 5820.0,
+          "amount": 5750.0,
           "unit": "g"
         },
         {
@@ -526,7 +526,7 @@
           "id": "msqg7r3b5soea",
           "name": "Solomillo de cerdo (congelado)",
           "type": "peso",
-          "amount": 1110.0,
+          "amount": 960.0,
           "unit": "g"
         },
         {
