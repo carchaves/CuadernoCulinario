@@ -190,7 +190,7 @@
           "id": "msqnf43cqbwpk",
           "name": "Café instantáneo",
           "type": "peso",
-          "amount": 298.0,
+          "amount": 296.0,
           "unit": "g"
         }
       ],
@@ -596,7 +596,7 @@
           "id": "msq700x0fgmsq",
           "name": "Leche entera",
           "type": "peso",
-          "amount": 1.55,
+          "amount": 1.3,
           "unit": "L"
         },
         {
