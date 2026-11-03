@@ -246,7 +246,7 @@
           "id": "msq6wquc4f67m",
           "name": "Tomate",
           "type": "unidad",
-          "amount": 10.0,
+          "amount": 8.0,
           "unit": "u"
         },
         {
@@ -526,7 +526,7 @@
           "id": "msqg7r3b5soea",
           "name": "Solomillo de cerdo (congelado)",
           "type": "peso",
-          "amount": 960.0,
+          "amount": 810.0,
           "unit": "g"
         },
         {
