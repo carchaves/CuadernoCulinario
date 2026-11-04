@@ -43,14 +43,14 @@
           "id": "msq6v8l44sqm0",
           "name": "Avena en hojuelas",
           "type": "peso",
-          "amount": 1340.0,
+          "amount": 1280.0,
           "unit": "g"
         },
         {
           "id": "msq6v8s7tih2i",
           "name": "Arroz blanco",
           "type": "peso",
-          "amount": 5610.0,
+          "amount": 5530.0,
           "unit": "g"
         },
         {
@@ -526,7 +526,7 @@
           "id": "msqg7r3b5soea",
           "name": "Solomillo de cerdo (congelado)",
           "type": "peso",
-          "amount": 560.0,
+          "amount": 380.0,
           "unit": "g"
         },
         {
@@ -673,7 +673,7 @@
           "id": "msq8hfy5b0wj1",
           "name": "Leche parcialmente descremada",
           "type": "peso",
-          "amount": 13.7,
+          "amount": 13.4,
           "unit": "L"
         }
       ],
@@ -1114,7 +1114,7 @@
           "id": "msq74of0eqsko",
           "name": "Mantequilla de maní",
           "type": "peso",
-          "amount": 424.0,
+          "amount": 404.0,
           "unit": "g"
         },
         {
@@ -1198,7 +1198,7 @@
           "id": "msqaajpsugwrb",
           "name": "Semillas de lino",
           "type": "peso",
-          "amount": 128.0,
+          "amount": 113.0,
           "unit": "g"
         }
       ],
