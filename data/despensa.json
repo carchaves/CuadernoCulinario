@@ -204,7 +204,7 @@
           "id": "msq6wp3d5a8p4",
           "name": "Cebolla amarilla/blanca",
           "type": "unidad",
-          "amount": 0.0,
+          "amount": 12.0,
           "unit": "u"
         },
         {
@@ -225,7 +225,7 @@
           "id": "msq6wq7ov9i16",
           "name": "Ajo",
           "type": "unidad",
-          "amount": 0.0,
+          "amount": 3.0,
           "unit": "u"
         },
         {
@@ -260,7 +260,7 @@
           "id": "msq6wralpk20k",
           "name": "Papa",
           "type": "unidad",
-          "amount": 0.0,
+          "amount": 8.0,
           "unit": "u"
         },
         {
@@ -330,7 +330,7 @@
           "id": "msq6xg14gmb49",
           "name": "Plátano maduro",
           "type": "unidad",
-          "amount": 20.0,
+          "amount": 9.0,
           "unit": "u"
         },
         {
@@ -358,7 +358,7 @@
           "id": "msq6xgxflatnc",
           "name": "Naranja",
           "type": "unidad",
-          "amount": 0.0,
+          "amount": 6.0,
           "unit": "u"
         },
         {
@@ -394,6 +394,13 @@
           "name": "Chile fresco",
           "type": "unidad",
           "amount": 0.0,
+          "unit": "u"
+        },
+        {
+          "id": "bc1e90b797a5",
+          "name": "Lechuga",
+          "type": "unidad",
+          "amount": 1.0,
           "unit": "u"
         }
       ],
